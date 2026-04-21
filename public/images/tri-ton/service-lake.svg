@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" role="img" aria-label="Lake activity placeholder">
+  <rect width="1400" height="1000" fill="#dfe9ea"/>
+  <rect y="530" width="1400" height="470" fill="#7aa7b0"/>
+  <path d="M0 474c163-95 338-119 541-71 146 35 262 75 422 61 133-12 250-59 437-129V530H0z" fill="#8fa16f"/>
+  <path d="m639 633 174 0-87 150z" fill="#fff9ef"/>
+  <text x="94" y="126" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">SERVICE LAKE ACTIVITY</text>
+  <text x="94" y="186" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="28">Replace with paddle boat, sup, or water-play image</text>
+</svg>

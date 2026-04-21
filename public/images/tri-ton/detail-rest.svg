@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Rest detail placeholder">
+  <rect width="1200" height="900" fill="#f2eadf"/>
+  <rect x="140" y="280" width="920" height="420" rx="34" fill="#fffaf1" stroke="#d8cfbf" stroke-width="8"/>
+  <rect x="250" y="410" width="300" height="70" rx="16" fill="#d9b879"/>
+  <rect x="650" y="390" width="130" height="180" rx="18" fill="#cbd7c2"/>
+  <rect x="820" y="390" width="130" height="180" rx="18" fill="#cbd7c2"/>
+  <text x="140" y="132" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="50" font-weight="700">DETAIL REST AREA</text>
+  <text x="140" y="804" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="26">Replace with seating area, deck, bench, or chill corner photo</text>
+</svg>

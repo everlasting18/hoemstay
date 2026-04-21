@@ -1,0 +1,96 @@
+---
+import { siteMeta } from "../data/site";
+
+interface Props {
+  title?: string;
+  intro?: string;
+}
+
+const {
+  title = "Để lại lịch dự kiến",
+  intro = "Điền tên, số điện thoại và ngày bạn muốn đi. Website sẽ mở Zalo ngay để bạn chat nhanh về tham quan và dịch vụ."
+} = Astro.props;
+---
+
+<section class="contact-card">
+  <div class="section-heading section-heading-compact">
+    <p class="eyebrow">Liên hệ nhẹ</p>
+    <h3>{title}</h3>
+    <p>{intro}</p>
+  </div>
+
+  <form class="contact-form" data-zalo-form data-zalo-url={siteMeta.contact.zalo}>
+    <label class="field">
+      <span>Tên</span>
+      <input name="name" type="text" placeholder="Ví dụ: Trâm Anh" required />
+    </label>
+
+    <div class="form-row">
+      <label class="field">
+        <span>Số điện thoại</span>
+        <input name="phone" type="tel" placeholder="090 123 4567" required />
+      </label>
+
+      <label class="field">
+        <span>Ngày dự kiến</span>
+        <input name="date" type="date" required />
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">Mở Zalo để chat</button>
+      <a class="btn btn-secondary" href={siteMeta.contact.phoneHref}>
+        Gọi trực tiếp
+      </a>
+    </div>
+
+    <p class="form-note">
+      Sau khi bấm gửi, website sẽ mở Zalo và thử copy sẵn nội dung yêu cầu để bạn dán nhanh vào
+      khung chat.
+    </p>
+    <p class="contact-status" data-form-status aria-live="polite"></p>
+  </form>
+</section>
+
+<script is:inline>
+  const forms = document.querySelectorAll("[data-zalo-form]");
+
+  forms.forEach((form) => {
+    if (form.dataset.bound === "true") return;
+    form.dataset.bound = "true";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const nameInput = form.querySelector('input[name="name"]');
+      const phoneInput = form.querySelector('input[name="phone"]');
+      const dateInput = form.querySelector('input[name="date"]');
+      const status = form.querySelector("[data-form-status]");
+
+      const message = [
+        "Xin chao Khu Du Lich Tri Ton,",
+        "Minh muon duoc tu van ve tham quan va dich vu.",
+        `Ten: ${nameInput?.value?.trim() || "Chua dien"}`,
+        `So dien thoai: ${phoneInput?.value?.trim() || "Chua dien"}`,
+        `Ngay du kien: ${dateInput?.value || "Chua chon"}`
+      ].join("\n");
+
+      let copied = false;
+
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(message);
+          copied = true;
+        } catch {}
+      }
+
+      if (status) {
+        status.textContent = copied
+          ? "Đã mở Zalo. Nội dung yêu cầu đã được copy sẵn để bạn dán nhanh vào cuộc chat."
+          : "Đã mở Zalo. Trình duyệt không cho copy tự động, bạn chỉ cần nhập nhanh nội dung vào khung chat.";
+      }
+
+      window.open(form.dataset.zaloUrl || "/", "_blank", "noopener,noreferrer");
+    });
+  });
+</script>

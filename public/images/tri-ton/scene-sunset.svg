@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" role="img" aria-label="Tri Ton sunset placeholder">
+  <defs>
+    <linearGradient id="sunset" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f7d8a9"/>
+      <stop offset="55%" stop-color="#e7b072"/>
+      <stop offset="100%" stop-color="#7b744f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="1000" fill="url(#sunset)"/>
+  <circle cx="980" cy="280" r="96" fill="#fff0bf" opacity=".78"/>
+  <path d="M0 620c203-24 356-91 509-98 140-6 248 41 377 36 140-6 238-61 514-119V1000H0z" fill="#6f6f4d"/>
+  <path d="M0 724c132 12 279-5 415-46 122-36 204-71 321-74 105-2 196 24 305 65 106 40 217 62 359 75V1000H0z" fill="#4f573b"/>
+  <text x="86" y="118" fill="#fff8ef" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="700">SCENE SUNSET / HILL VIEW</text>
+  <text x="86" y="178" fill="#fff8ef" font-family="Arial, Helvetica, sans-serif" font-size="28">Replace with sunset, hill, high view, or golden-hour frame</text>
+</svg>

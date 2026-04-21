@@ -1,0 +1,614 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { galleryCollections, reviews, rooms, services, siteMeta } from "../data/site";
+
+const homeGallery = galleryCollections.flatMap((collection) => collection.items).slice(0, 5);
+const featuredServices = services.slice(0, 4);
+const galleryRailPrimary = [...homeGallery, ...homeGallery];
+const galleryRailSecondary = [...homeGallery].reverse();
+const galleryRailSecondaryLoop = [...galleryRailSecondary, ...galleryRailSecondary];
+const heroDeck = galleryCollections
+  .flatMap((collection) => collection.items)
+  .slice(0, 9)
+  .map((item) => ({
+    image: item.image,
+    title: item.title
+  }));
+const heroStartIndex = Math.floor(heroDeck.length / 2);
+const reviewCards = reviews.map((review, index) => ({
+  ...review,
+  badge: index === 0 ? "Đánh giá nổi bật" : "Khách đã trải nghiệm",
+  initials: review.name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part.charAt(0).toUpperCase())
+    .join("")
+}));
+const siteOrigin = Astro.site ?? new URL("https://example.com");
+const absoluteUrl = (path: string) => new URL(path, siteOrigin).toString();
+
+const seoStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteMeta.name,
+    url: absoluteUrl("/")
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "LodgingBusiness",
+    name: siteMeta.name,
+    description: siteMeta.description,
+    url: absoluteUrl("/"),
+    image: absoluteUrl(siteMeta.heroImage),
+    telephone: siteMeta.contact.phoneDisplay,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Tri Tôn",
+      addressRegion: "An Giang",
+      addressCountry: "VN"
+    },
+    sameAs: [siteMeta.contact.facebook]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Danh sách phòng nghỉ",
+    itemListElement: rooms.map((room, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: room.name,
+      url: absoluteUrl(`/phong-nghi/${room.slug}/`)
+    }))
+  }
+];
+---
+
+<MainLayout title="Trang chủ">
+  <Fragment slot="head">
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(seoStructuredData)}></script>
+  </Fragment>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-visual">
+        <div class="sr-only">
+          <h1>Khu Du Lịch Sinh Thái Tri Tôn – Nghỉ Dưỡng Giữa Bảy Núi An Giang</h1>
+        </div>
+
+        <div class="hero-stage-shell" data-reveal>
+          <div class="hero-card-stage hero-depth-stage" data-hero-depth-stage data-scroll-hero data-hero-active={heroStartIndex}>
+            {heroDeck.map((item, index) => (
+              <button
+                class:list={["hero-depth-card", { "is-active": index === heroStartIndex }]}
+                type="button"
+                data-hero-card
+                data-hero-index={index}
+                data-hero-title={item.title}
+                aria-label={`Xem ảnh ${index + 1}: ${item.title}`}
+              >
+                <img src={item.image} alt={item.title} loading={index === heroStartIndex ? "eager" : "lazy"} />
+              </button>
+            ))}
+          </div>
+
+          <div class="hero-stage-meta">
+            <div class="hero-image-caption hero-image-caption-center hero-stage-caption" data-hero-caption aria-live="polite">
+              <strong data-hero-active-title>{heroDeck[heroStartIndex].title}</strong>
+              <span>{siteMeta.location}</span>
+            </div>
+
+            <div class="hero-stage-controls">
+              <button class="hero-stage-arrow" type="button" data-hero-prev aria-label="Ảnh trước">‹</button>
+              <div class="hero-stage-indicators" aria-label="Điểm chuyển ảnh hero">
+                {heroDeck.map((item, index) => (
+                  <button
+                    class:list={["hero-stage-indicator", { active: index === heroStartIndex }]}
+                    type="button"
+                    data-hero-indicator
+                    data-hero-indicator-index={index}
+                    aria-label={`Xem ảnh ${index + 1}: ${item.title}`}
+                  ></button>
+                ))}
+              </div>
+              <button class="hero-stage-arrow" type="button" data-hero-next aria-label="Ảnh tiếp theo">›</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="dich-vu">
+    <div class="container">
+      <div class="showcase-intro" data-reveal>
+        <div class="section-heading">
+          <p class="eyebrow">Dịch vụ & trải nghiệm</p>
+          <h2>Những trải nghiệm vừa đủ để chuyến đi có điểm nhấn mà không bị rối.</h2>
+          <p>
+            Xe điện tham quan, chèo SUP, ẩm thực Bảy Núi, cắm trại và tour check-in – những hoạt
+            động được thiết kế để chuyến đi của bạn thêm phần trọn vẹn.
+          </p>
+        </div>
+
+        <div class="showcase-note">
+          <span>Tất cả dịch vụ có thể đặt trước qua Zalo để chuyến đi của bạn được chuẩn bị chu đáo hơn.</span>
+          <a class="text-link" href="/#lien-he">Hỏi dịch vụ ngay</a>
+        </div>
+      </div>
+
+      <div class="service-spotlight-grid">
+        {featuredServices.map((service, index) => (
+          <article class="service-spotlight" data-reveal style={`--delay:${index * 110}ms`}>
+            <div class="service-spotlight-media">
+              <img src={service.image} alt={service.name} loading="lazy" />
+            </div>
+            <div class="service-spotlight-body">
+              <div class="service-spotlight-top">
+                <span class="service-number">{String(index + 1).padStart(2, "0")}</span>
+                <span class="card-tag">{service.timing}</span>
+              </div>
+              <h3>{service.name}</h3>
+              <p>{service.summary}</p>
+              <p class="service-spotlight-description">{service.description}</p>
+              <a class="text-link" href="/#lien-he">
+                Hỏi dịch vụ này
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted" id="phong-nghi">
+    <div class="container">
+      <div class="showcase-intro" data-reveal>
+        <div class="section-heading">
+          <p class="eyebrow">Phòng & Lưu trú</p>
+          <h2>Không gian nghỉ ngơi đậm chất thiên nhiên, phù hợp mọi nhóm khách.</h2>
+          <p>
+            Ba lựa chọn lưu trú với thiết kế mộc mạc, gần gũi thiên nhiên – từ bungalow view hồ
+            đến cabin đồi cao với tầm nhìn toàn cảnh Bảy Núi.
+          </p>
+        </div>
+        <div class="showcase-note">
+          <span>Tất cả phòng đều có điều hòa và xe điện đưa đón nội khu. Đặt phòng qua Zalo để được hỗ trợ nhanh nhất.</span>
+          <a class="text-link" href="/#lien-he">Hỏi phòng trống</a>
+        </div>
+      </div>
+
+      <div class="room-showcase-list">
+        {rooms.map((room, index) => (
+          <article class:list={["room-showcase", { reverse: index % 2 === 1 }]} data-reveal style={`--delay:${index * 110}ms`}>
+            <a
+              class="card-click-overlay"
+              href={`/phong-nghi/${room.slug}`}
+              aria-label={`Xem chi tiết phòng ${room.name}`}
+            ></a>
+            <div class="room-showcase-media">
+              <div class="room-showcase-main">
+                <img src={room.images[0]} alt={room.name} loading="lazy" />
+              </div>
+              <div class="room-showcase-thumbs">
+                {room.images.slice(1, 3).map((image, imageIndex) => (
+                  <div class="room-showcase-thumb">
+                    <img src={image} alt={`${room.name} - góc ${imageIndex + 2}`} loading="lazy" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div class="room-showcase-content">
+              <div class="room-showcase-top">
+                <span class="card-tag">{room.type}</span>
+                <div class="meta-row">
+                  <span class="chip">{room.guests}</span>
+                  <span class="chip">{room.area}</span>
+                </div>
+              </div>
+
+              <h3>{room.name}</h3>
+              <p>{room.description}</p>
+
+              <div class="room-card-view">
+                <span>✦ {room.view}</span>
+                <span>✦ {room.highlight}</span>
+              </div>
+
+              <ul class="feature-list">
+                {room.amenities.slice(0, 6).map((amenity) => (
+                  <li>{amenity}</li>
+                ))}
+              </ul>
+
+              <div class="room-actions">
+                <a class="btn btn-secondary" href={`/phong-nghi/${room.slug}`}>
+                  Xem chi tiết phòng
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted" id="hinh-anh">
+    <div class="container">
+      <div class="showcase-intro" data-reveal>
+        <div class="section-heading">
+          <p class="eyebrow">Hình ảnh thực tế</p>
+          <h2>Những khoảnh khắc thật tại Windy Hill, Tri Tôn An Giang</h2>
+          <p>
+            Cảnh quan hồ núi thoáng rộng, không gian lưu trú sạch sẽ và những trải nghiệm thật sự
+            ở Bảy Núi – mỗi hình ảnh là một lời mời đến Windy Hill.
+          </p>
+        </div>
+
+        <div class="showcase-note">
+          <span>Mỗi bức ảnh là một khoảnh khắc thật tại Windy Hill – nơi bạn sẽ tìm thấy sự yên bình và cảm hứng.</span>
+          <a class="text-link" href="/#lien-he">Nhắn để nhận tư vấn</a>
+        </div>
+      </div>
+
+      <div class="gallery-motion" data-reveal>
+        <div class="gallery-motion-row">
+          <div class="gallery-motion-track gallery-motion-track-forward">
+            {galleryRailPrimary.map((item, index) => (
+              <article class="gallery-motion-card" data-gallery-card aria-hidden={index >= homeGallery.length ? "true" : "false"}>
+                <img src={item.image} alt={item.title} loading="lazy" />
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="gallery-motion-row gallery-motion-row-offset">
+          <div class="gallery-motion-track gallery-motion-track-reverse">
+            {galleryRailSecondaryLoop.map((item, index) => (
+              <article class="gallery-motion-card gallery-motion-card-tall" data-gallery-card aria-hidden={index >= galleryRailSecondary.length ? "true" : "false"}>
+                <img src={item.image} alt={item.title} loading="lazy" />
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted review-section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Review khách cũ</p>
+        <h2>Phản hồi thật từ khách đã trải nghiệm tại Windy Hill.</h2>
+        <p>
+          Những phản hồi ngắn, rõ và thực tế giúp khách mới hình dung nhanh chất lượng dịch vụ,
+          không gian nghỉ và trải nghiệm tại Tri Tôn.
+        </p>
+      </div>
+
+      <div class="card-grid review-grid" data-mobile-snap data-snap-group="reviews">
+        {reviewCards.map((review, index) => (
+          <article class:list={["review-card", { "is-featured": index === 0 }]} data-reveal style={`--delay:${index * 90}ms`}>
+            <div class="review-card-top">
+              <div class="review-stars" aria-label="5 sao">★★★★★</div>
+              <span class="review-badge">{review.badge}</span>
+            </div>
+            <p class="review-quote">{review.quote}</p>
+            <div class="review-author">
+              <span class="review-avatar" aria-hidden="true">{review.initials}</span>
+              <div class="review-meta">
+                <strong>{review.name}</strong>
+                <span>{review.origin}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="mobile-snap-indicators" data-snap-indicators="reviews" aria-label="Điểm chuyển review">
+        {reviews.map((_, index) => <button class:list={["mobile-snap-dot", { active: index === 0 }]} type="button"></button>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lien-he">
+    <div class="container">
+      <article class="cta-panel">
+        <p class="eyebrow">Đặt lịch dễ dàng</p>
+        <h2>Nhắn Zalo hoặc gọi hotline để nhận tư vấn nhanh.</h2>
+        <p>
+          Chúng mình luôn sẵn sàng tư vấn lịch trình, báo giá và đặt chỗ cho nhóm của bạn. Liên
+          hệ qua Zalo hoặc hotline để nhận phản hồi nhanh nhất.
+        </p>
+
+        <div class="contact-highlights">
+          <div class="info-card">
+            <strong>Phản hồi trong 30 phút</strong>
+            <p>Nhắn Zalo bất cứ lúc nào, chúng mình phản hồi nhanh trong giờ hành chính và cả buổi tối.</p>
+          </div>
+          <div class="info-card">
+            <strong>Tư vấn lịch trình miễn phí</strong>
+            <p>Gọi hotline để được tư vấn trực tiếp về lịch trình, phòng nghỉ và gói dịch vụ phù hợp nhóm đi.</p>
+          </div>
+          <div class="info-card">
+            <strong>Đặt cọc linh hoạt</strong>
+            <p>Đặt cọc 30% để giữ chỗ. Thanh toán phần còn lại khi check-in tại khu du lịch.</p>
+          </div>
+        </div>
+
+        <div class="quick-links">
+          <a class="btn btn-primary" href={siteMeta.contact.zalo} target="_blank" rel="noreferrer">
+            Mở Zalo
+          </a>
+          <a class="btn btn-secondary" href={siteMeta.contact.phoneHref}>
+            {siteMeta.contact.phoneDisplay}
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <script>
+    import { animate } from "motion";
+
+    const heroDepthStages = document.querySelectorAll<HTMLElement>("[data-hero-depth-stage]");
+    const mobileSnapCarousels = document.querySelectorAll<HTMLElement>("[data-mobile-snap]");
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const HERO_ROTATION_MS = 3800;
+    const HERO_VISIBLE_DEPTH = 3;
+
+    const bindMobileSnapIndicators = () => {
+      mobileSnapCarousels.forEach((carousel) => {
+        if (carousel.dataset.snapBound === "true") return;
+        carousel.dataset.snapBound = "true";
+
+        const group = carousel.dataset.snapGroup;
+        const dots = Array.from(document.querySelectorAll<HTMLButtonElement>(`[data-snap-indicators="${group}"] .mobile-snap-dot`));
+        const items = Array.from(carousel.children) as HTMLElement[];
+        if (!dots.length || !items.length) return;
+
+        const updateDots = () => {
+          const left = carousel.scrollLeft;
+          const widths = items.map((item) => item.offsetLeft);
+          let activeIndex = 0;
+          let bestDistance = Infinity;
+
+          widths.forEach((offset, index) => {
+            const distance = Math.abs(offset - left);
+            if (distance < bestDistance) {
+              bestDistance = distance;
+              activeIndex = index;
+            }
+          });
+
+          dots.forEach((dot, index) => {
+            const active = index === activeIndex;
+            dot.classList.toggle("active", active);
+            dot.setAttribute("aria-pressed", String(active));
+          });
+        };
+
+        let scrollRaf = 0;
+        carousel.addEventListener("scroll", () => {
+          if (scrollRaf) return;
+          scrollRaf = requestAnimationFrame(() => {
+            updateDots();
+            scrollRaf = 0;
+          });
+        });
+
+        dots.forEach((dot, index) => {
+          dot.addEventListener("click", () => {
+            items[index]?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+          });
+        });
+
+        updateDots();
+      });
+    };
+
+    bindMobileSnapIndicators();
+    const heroSection = document.querySelector<HTMLElement>(".hero");
+
+    if (heroSection && "IntersectionObserver" in window) {
+      const heroFloatingObserver = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          const shouldHideFloating = entry?.isIntersecting && entry.intersectionRatio > 0.25;
+          document.body.classList.toggle("hero-focus", Boolean(shouldHideFloating));
+        },
+        {
+          threshold: [0, 0.25, 0.5],
+          rootMargin: "-68px 0px -26% 0px"
+        }
+      );
+
+      heroFloatingObserver.observe(heroSection);
+    }
+
+    const wrapIndex = (value: number, total: number) => ((value % total) + total) % total;
+
+    const circularDistance = (index: number, activeIndex: number, total: number) => {
+      let diff = index - activeIndex;
+      const half = total / 2;
+
+      if (diff > half) diff -= total;
+      if (diff < -half) diff += total;
+      return diff;
+    };
+
+    heroDepthStages.forEach((stage) => {
+      const cards = Array.from(stage.querySelectorAll<HTMLElement>("[data-hero-card]"));
+      if (!cards.length) return;
+
+      const shell = stage.parentElement;
+      const titleNode = shell?.querySelector<HTMLElement>("[data-hero-active-title]");
+      const indicators = Array.from(shell?.querySelectorAll<HTMLButtonElement>("[data-hero-indicator]") ?? []);
+      const prevButton = shell?.querySelector<HTMLButtonElement>("[data-hero-prev]");
+      const nextButton = shell?.querySelector<HTMLButtonElement>("[data-hero-next]");
+      const total = cards.length;
+
+      let activeIndex = wrapIndex(Number(stage.dataset.heroActive || Math.floor(total / 2)), total);
+      let heroInterval = 0;
+      let resumeTimeout = 0;
+
+      const updateMeta = (animateTitle = true) => {
+        const activeCard = cards[activeIndex];
+        const activeTitle = activeCard?.dataset.heroTitle || "";
+
+        if (titleNode) {
+          titleNode.textContent = activeTitle;
+          if (!prefersReducedMotion && animateTitle) {
+            animate(
+              titleNode,
+              { opacity: [0.45, 1], y: [8, 0], filter: ["blur(8px)", "blur(0px)"] },
+              { duration: 0.48, ease: [0.2, 0.78, 0.2, 1] }
+            );
+          }
+        }
+
+        indicators.forEach((indicator) => {
+          const indicatorIndex = Number(indicator.dataset.heroIndicatorIndex || 0);
+          const isActive = indicatorIndex === activeIndex;
+          indicator.classList.toggle("active", isActive);
+          indicator.setAttribute("aria-pressed", String(isActive));
+        });
+      };
+
+      const placeCards = (immediate = false) => {
+        const stageWidth = Math.max(stage.clientWidth, 320);
+        const compactMotion = stageWidth <= 820;
+        const visibleDepth = compactMotion ? 2 : HERO_VISIBLE_DEPTH;
+        const unit = stageWidth <= 680 ? stageWidth * 0.234 : compactMotion ? stageWidth * 0.186 : stageWidth * 0.175;
+
+        cards.forEach((card, index) => {
+          const diff = circularDistance(index, activeIndex, total);
+          const abs = Math.abs(diff);
+          const side = Math.sign(diff) || 1;
+          const hidden = abs > visibleDepth;
+
+          const offsetFactor = abs === 1 ? (compactMotion ? 1.12 : 1.05) : abs === 2 ? (compactMotion ? 2.08 : 1.94) : compactMotion ? 2.9 : 2.72;
+          const x = abs === 0 ? 0 : side * unit * offsetFactor;
+          const y = abs === 0 ? 0 : abs === 1 ? 5 : abs === 2 ? 14 : 24;
+          const z = abs === 0 ? 470 : abs === 1 ? 300 : abs === 2 ? 162 : 50;
+          const scale = abs === 0 ? 1 : abs === 1 ? (compactMotion ? 0.86 : 0.89) : abs === 2 ? (compactMotion ? 0.73 : 0.78) : compactMotion ? 0.63 : 0.67;
+          const rotateY = abs === 0 ? 0 : side > 0 ? -(compactMotion ? 13 + abs * 3 : 10 + abs * 4) : compactMotion ? 13 + abs * 3 : 10 + abs * 4;
+          const rotateZ = abs === 0 ? 0 : side > 0 ? 0.9 * abs : -0.9 * abs;
+          const opacity = hidden ? 0 : abs === 0 ? 1 : abs === 1 ? 0.94 : abs === 2 ? 0.74 : 0.5;
+          const brightness = abs === 0 ? 1 : abs === 1 ? 0.97 : abs === 2 ? (compactMotion ? 0.9 : 0.84) : compactMotion ? 0.84 : 0.72;
+          const saturation = abs === 0 ? 1.02 : abs === 1 ? 0.98 : abs === 2 ? (compactMotion ? 0.95 : 0.9) : compactMotion ? 0.91 : 0.84;
+          const blur = compactMotion ? 0 : abs === 0 ? 0 : abs === 1 ? 0 : abs === 2 ? 0.55 : 1.1;
+
+          card.style.zIndex = String(120 - abs * 14 + (side < 0 ? 1 : 0));
+          card.style.filter = `saturate(${saturation}) brightness(${brightness}) blur(${blur}px)`;
+          card.style.pointerEvents = hidden ? "none" : "auto";
+          card.classList.toggle("is-active", abs === 0);
+          card.classList.toggle("is-hidden", hidden);
+
+          if (immediate || prefersReducedMotion) {
+            card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale}) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+            card.style.opacity = String(opacity);
+          } else {
+            animate(
+              card,
+              { x, y, z, scale, rotateY, rotateZ, opacity },
+              compactMotion
+                ? { duration: 0.46, ease: [0.22, 0.61, 0.36, 1] }
+                : { type: "spring", stiffness: 148, damping: 27, mass: 0.92 }
+            );
+          }
+        });
+      };
+
+      const stopAutoplay = () => {
+        if (heroInterval) {
+          window.clearInterval(heroInterval);
+          heroInterval = 0;
+        }
+      };
+
+      const goTo = (nextIndex: number, immediate = false) => {
+        activeIndex = wrapIndex(nextIndex, total);
+        stage.dataset.heroActive = String(activeIndex);
+        placeCards(immediate);
+        updateMeta(!immediate);
+      };
+
+      const startAutoplay = () => {
+        if (prefersReducedMotion || heroInterval) return;
+        heroInterval = window.setInterval(() => {
+          goTo(activeIndex + 1);
+        }, HERO_ROTATION_MS);
+      };
+
+      const resetAutoplay = () => {
+        if (prefersReducedMotion) return;
+        stopAutoplay();
+        startAutoplay();
+      };
+
+      cards.forEach((card) => {
+        card.addEventListener("click", () => {
+          const targetIndex = Number(card.dataset.heroIndex || 0);
+          if (targetIndex === activeIndex) return;
+          goTo(targetIndex);
+          resetAutoplay();
+        });
+      });
+
+      indicators.forEach((indicator) => {
+        indicator.addEventListener("click", () => {
+          goTo(Number(indicator.dataset.heroIndicatorIndex || 0));
+          resetAutoplay();
+        });
+      });
+
+      prevButton?.addEventListener("click", () => {
+        goTo(activeIndex - 1);
+        resetAutoplay();
+      });
+
+      nextButton?.addEventListener("click", () => {
+        goTo(activeIndex + 1);
+        resetAutoplay();
+      });
+
+      stage.addEventListener("pointerenter", stopAutoplay);
+      stage.addEventListener("pointerleave", startAutoplay);
+      stage.addEventListener("touchstart", stopAutoplay, { passive: true });
+      stage.addEventListener("touchend", () => {
+        if (resumeTimeout) window.clearTimeout(resumeTimeout);
+        resumeTimeout = window.setTimeout(() => {
+          startAutoplay();
+          resumeTimeout = 0;
+        }, 1300);
+      }, { passive: true });
+
+      let resizeRaf = 0;
+      window.addEventListener(
+        "resize",
+        () => {
+          if (resizeRaf) return;
+          resizeRaf = requestAnimationFrame(() => {
+            placeCards(true);
+            resizeRaf = 0;
+          });
+        },
+        { passive: true }
+      );
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          stopAutoplay();
+        } else {
+          startAutoplay();
+        }
+      });
+
+      goTo(activeIndex, true);
+      startAutoplay();
+    });
+  </script>
+</MainLayout>

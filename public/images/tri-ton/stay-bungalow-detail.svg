@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Bungalow detail placeholder">
+  <rect width="1200" height="900" fill="#f2ebdf"/>
+  <rect x="120" y="170" width="960" height="560" rx="36" fill="#fffaf1" stroke="#d8cfbf" stroke-width="8"/>
+  <rect x="200" y="250" width="430" height="160" rx="20" fill="#d6b68a"/>
+  <rect x="200" y="450" width="290" height="180" rx="20" fill="#e8dfd1"/>
+  <rect x="690" y="250" width="310" height="380" rx="20" fill="#cdd9c6"/>
+  <text x="120" y="116" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="50" font-weight="700">STAY BUNGALOW DETAIL</text>
+  <text x="120" y="800" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="26">Use interior detail, patio, or bathroom / balcony image</text>
+</svg>

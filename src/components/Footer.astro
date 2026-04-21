@@ -1,0 +1,50 @@
+---
+import { navigation, siteMeta } from "../data/site";
+
+const brandInitials =
+  siteMeta.shortName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("") || "WH";
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a class="brand brand-footer" href="/">
+        <span class="brand-mark">{brandInitials}</span>
+        <span class="brand-copy">
+          <strong>{siteMeta.name}</strong>
+          <small>{siteMeta.location}</small>
+        </span>
+      </a>
+      <p>
+        Windy Hill tại Tri Tôn – điểm đến lý tưởng giữa hồ, núi và thiên nhiên hoang sơ của vùng
+        Bảy Núi An Giang.
+      </p>
+    </div>
+
+    <div class="footer-links">
+      <h3>Điều hướng</h3>
+      <div class="footer-link-list">
+        {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <h3>Liên hệ nhanh</h3>
+      <div class="footer-link-list">
+        <a href={siteMeta.contact.phoneHref}>{siteMeta.contact.phoneDisplay}</a>
+        <a href={siteMeta.contact.zalo} target="_blank" rel="noreferrer">
+          Chat Zalo
+        </a>
+        <a href={siteMeta.contact.facebook} target="_blank" rel="noreferrer">
+          Facebook
+        </a>
+        <a href={`mailto:${siteMeta.contact.email}`}>{siteMeta.contact.email}</a>
+      </div>
+    </div>
+  </div>
+</footer>

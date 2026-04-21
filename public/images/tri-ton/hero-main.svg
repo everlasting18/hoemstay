@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="Tri Ton hero main placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#efd7aa"/>
+      <stop offset="55%" stop-color="#d9b879"/>
+      <stop offset="100%" stop-color="#7c8f5b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <path d="M0 680c149-83 320-109 497-75 120 23 225 66 355 64 143-2 259-56 386-96 135-42 239-40 362 12V1000H0z" fill="#68794f" opacity=".72"/>
+  <path d="M0 760c147-36 262-37 407 7 90 27 153 56 267 58 126 2 252-53 372-69 157-20 327 22 554 101V1000H0z" fill="#536241" opacity=".95"/>
+  <ellipse cx="650" cy="620" rx="450" ry="88" fill="#dce7dd" opacity=".48"/>
+  <text x="110" y="170" fill="#fff9ef" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="700">TRI TON HERO MAIN</text>
+  <text x="110" y="238" fill="#f7f0e2" font-family="Arial, Helvetica, sans-serif" font-size="30">Replace with real scenic photo of lake, hill, or entrance area</text>
+</svg>

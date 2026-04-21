@@ -1,0 +1,18 @@
+---
+import { siteMeta } from "../data/site";
+---
+
+<div class="floating-actions" aria-label="Liên hệ nổi">
+  <a class="floating-action floating-zalo" href={siteMeta.contact.zalo} target="_blank" rel="noreferrer">
+    <span class="floating-action-text">
+      <strong>Zalo</strong>
+      <small>Chat nhanh</small>
+    </span>
+  </a>
+  <a class="floating-action floating-call" href={siteMeta.contact.phoneHref}>
+    <span class="floating-action-text">
+      <strong>Gọi</strong>
+      <small>{siteMeta.contact.phoneDisplay}</small>
+    </span>
+  </a>
+</div>

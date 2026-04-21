@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" role="img" aria-label="Tour placeholder">
+  <rect width="1400" height="1000" fill="#e9dcc5"/>
+  <path d="M0 620c143-50 283-69 428-52 109 13 180 50 305 58 129 8 220-27 339-63 113-35 203-47 328-34V1000H0z" fill="#869867"/>
+  <path d="M195 780c113-106 234-173 375-206 144-34 302-26 474 20l155 41" fill="none" stroke="#fff7eb" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="385" cy="702" r="28" fill="#31442e"/>
+  <circle cx="680" cy="626" r="28" fill="#31442e"/>
+  <circle cx="978" cy="663" r="28" fill="#31442e"/>
+  <text x="86" y="126" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">SERVICE TOUR / CHECK-IN ROUTE</text>
+  <text x="86" y="186" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="28">Replace with guided route, map-style, or check-in stop image</text>
+</svg>

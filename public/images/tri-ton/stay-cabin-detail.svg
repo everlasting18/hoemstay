@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Cabin detail placeholder">
+  <rect width="1200" height="900" fill="#f1e8dd"/>
+  <rect x="110" y="150" width="980" height="620" rx="38" fill="#fffaf1" stroke="#d8cfbf" stroke-width="8"/>
+  <rect x="200" y="250" width="360" height="320" rx="22" fill="#d7b98c"/>
+  <rect x="620" y="250" width="360" height="140" rx="20" fill="#e7ddd0"/>
+  <rect x="620" y="430" width="360" height="140" rx="20" fill="#cad8c4"/>
+  <text x="110" y="108" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700">STAY CABIN DETAIL</text>
+  <text x="110" y="820" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="26">Use balcony, window view, bed, or detail shot</text>
+</svg>

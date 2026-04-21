@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" role="img" aria-label="Tri Ton lake placeholder">
+  <rect width="1400" height="1000" fill="#dde8e4"/>
+  <rect width="1400" height="470" fill="#f2dfb3"/>
+  <circle cx="1080" cy="170" r="88" fill="#f0c56a"/>
+  <path d="M0 490c130-62 257-84 408-58 123 22 187 86 328 85 157-1 239-83 380-97 111-11 207 22 284 70V1000H0z" fill="#7b8d60"/>
+  <rect y="590" width="1400" height="410" fill="#94b5bc"/>
+  <path d="M0 724c138 39 270 52 395 35 131-18 235-69 354-64 107 4 167 38 276 52 111 14 236 3 375-33v251H0z" fill="#7399a0" opacity=".82"/>
+  <text x="84" y="112" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="700">SCENE LAKE</text>
+  <text x="84" y="172" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="28">Replace with lake / water / large scenic shot</text>
+</svg>

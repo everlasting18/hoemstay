@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" role="img" aria-label="Food placeholder">
+  <rect width="1400" height="1000" fill="#f1e7d8"/>
+  <rect x="200" y="230" width="1000" height="560" rx="44" fill="#fffaf1" stroke="#d8cfbf" stroke-width="8"/>
+  <circle cx="700" cy="510" r="180" fill="#d9b879"/>
+  <circle cx="700" cy="510" r="124" fill="#7f9361"/>
+  <circle cx="620" cy="456" r="24" fill="#fff4dc"/>
+  <circle cx="748" cy="442" r="18" fill="#fff4dc"/>
+  <circle cx="772" cy="578" r="22" fill="#fff4dc"/>
+  <text x="200" y="130" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">SERVICE FOOD / LOCAL CUISINE</text>
+  <text x="200" y="876" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="28">Replace with local dish, dining space, or food spread image</text>
+</svg>

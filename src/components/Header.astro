@@ -1,0 +1,139 @@
+---
+import { navigation, siteMeta } from "../data/site";
+
+const brandInitials =
+  siteMeta.shortName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("") || "WH";
+---
+
+<header class="site-header">
+  <div class="container header-shell" data-mobile-header>
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark">{brandInitials}</span>
+        <span class="brand-copy">
+          <strong>{siteMeta.shortName}</strong>
+          <small>{siteMeta.tagline}</small>
+        </span>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        {
+          navigation.map((item, index) => (
+            <a class:list={["nav-link", { active: index === 0 }]} href={item.href}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="header-actions">
+        <a class="header-phone" href={siteMeta.contact.phoneHref}>
+          <span>Hotline</span>
+          <strong>{siteMeta.contact.phoneDisplay}</strong>
+        </a>
+
+        <button
+          class="mobile-nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-nav-panel"
+          data-mobile-nav-toggle
+        >
+          <span class="sr-only">Mở menu điều hướng</span>
+          <span class="mobile-nav-toggle-label">Menu</span>
+          <span class="mobile-nav-toggle-bars" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-nav-panel" id="mobile-nav-panel" data-mobile-nav-panel hidden>
+      <nav class="mobile-nav" aria-label="Điều hướng điện thoại">
+        {
+          navigation.map((item, index) => (
+            <a class:list={["mobile-nav-link", { active: index === 0 }]} href={item.href}>
+              <span>{item.label}</span>
+              <small>{index === 0 ? "Điểm vào chính" : "Xem section"}</small>
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="mobile-nav-quick">
+        <a class="mobile-quick-card" href={siteMeta.contact.phoneHref}>
+          <span>Hotline</span>
+          <strong>{siteMeta.contact.phoneDisplay}</strong>
+        </a>
+        <a class="mobile-quick-card" href={siteMeta.contact.zalo} target="_blank" rel="noreferrer">
+          <span>Zalo</span>
+          <strong>Chat trực tiếp</strong>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const header = document.querySelector("[data-mobile-header]");
+  const toggle = header?.querySelector("[data-mobile-nav-toggle]");
+  const panel = header?.querySelector("[data-mobile-nav-panel]");
+  const mobileLinks = header?.querySelectorAll(".mobile-nav-link");
+
+  if (header && toggle && panel) {
+    header.dataset.menuOpen = "false";
+
+    const closeMenu = () => {
+      toggle.setAttribute("aria-expanded", "false");
+      panel.hidden = true;
+      header.dataset.menuOpen = "false";
+      document.body.classList.remove("mobile-menu-open");
+    };
+
+    const openMenu = () => {
+      toggle.setAttribute("aria-expanded", "true");
+      panel.hidden = false;
+      header.dataset.menuOpen = "true";
+      document.body.classList.add("mobile-menu-open");
+    };
+
+    toggle.addEventListener("click", () => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true";
+
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    mobileLinks?.forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!header.contains(event.target) && toggle.getAttribute("aria-expanded") === "true") {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+        closeMenu();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 720) {
+        closeMenu();
+      }
+    });
+  }
+</script>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" role="img" aria-label="Cabin main placeholder">
+  <rect width="1400" height="1000" fill="#efe4d6"/>
+  <path d="M220 735V356l178-126h497l175 126v379z" fill="#fffaf1" stroke="#d8cfbf" stroke-width="8"/>
+  <rect x="315" y="410" width="360" height="250" rx="24" fill="#d7b98c"/>
+  <rect x="735" y="410" width="245" height="110" rx="18" fill="#e9dfd0"/>
+  <rect x="735" y="548" width="245" height="112" rx="18" fill="#d5e0ca"/>
+  <text x="210" y="138" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">STAY CABIN MAIN</text>
+  <text x="210" y="860" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="28">Replace with cabin exterior or best-view room image</text>
+</svg>
