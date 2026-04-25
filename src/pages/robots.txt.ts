@@ -1,10 +1,9 @@
 import type { APIRoute } from "astro";
-
-const resolveSiteUrl = (site?: URL) => site ?? new URL(import.meta.env.PUBLIC_SITE_URL || "https://example.com");
+import { resolveSiteUrl, toAbsoluteUrl } from "../lib/site-url";
 
 export const GET: APIRoute = ({ site }) => {
   const baseUrl = resolveSiteUrl(site);
-  const sitemapUrl = new URL("/sitemap.xml", baseUrl).toString();
+  const sitemapUrl = toAbsoluteUrl("/sitemap.xml", baseUrl);
 
   const body = `User-agent: *
 Allow: /

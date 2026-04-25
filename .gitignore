@@ -1,5 +1,11 @@
 node_modules
 dist
 .astro
+*.tsbuildinfo
+dist.zip
+admin/vite.config.js
+admin/vite.config.d.ts
 .env
 .env.*
+!.env.example
+!**/.env.example

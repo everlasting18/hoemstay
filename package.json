@@ -8,10 +8,13 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "pb:mvp:setup": "node ./scripts/pocketbase/setup-mvp.mjs",
+    "pb:check": "node ./scripts/pocketbase/check-content.mjs"
   },
   "dependencies": {
-    "astro": "^5.7.0",
+    "@astrojs/cloudflare": "^13.2.1",
+    "astro": "^6.1.9",
     "motion": "^12.38.0"
   },
   "devDependencies": {

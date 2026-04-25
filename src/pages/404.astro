@@ -1,0 +1,61 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { getContent } from "../lib/content";
+
+const { rooms, siteMeta } = await getContent();
+const featuredRooms = rooms.slice(0, 3);
+---
+
+<MainLayout
+  title="Không tìm thấy trang"
+  description={`Trang bạn đang tìm không tồn tại hoặc đã được di chuyển trên ${siteMeta.name}.`}
+  image={siteMeta.heroImage}
+  pageClass="not-found-page"
+  noindex
+>
+  <section class="section not-found-section">
+    <div class="container">
+      <div class="not-found-panel" data-reveal>
+        <div class="not-found-media">
+          <img src={siteMeta.heroImage} alt={siteMeta.name} loading="eager" />
+          <span>404</span>
+        </div>
+
+        <div class="not-found-copy">
+          <p class="eyebrow">Không tìm thấy trang</p>
+          <h1>Đường dẫn này không còn khả dụng.</h1>
+          <p>
+            Trang có thể đã được đổi địa chỉ hoặc chưa được tạo. Bạn có thể quay lại trang chủ,
+            xem danh sách phòng hoặc liên hệ để được hỗ trợ đặt phòng nhanh hơn.
+          </p>
+
+          <div class="quick-links">
+            <a class="btn btn-primary" href="/">Về trang chủ</a>
+            <a class="btn btn-secondary" href="/#phong-nghi">Xem phòng nghỉ</a>
+          </div>
+        </div>
+      </div>
+
+      {featuredRooms.length > 0 && (
+        <div class="not-found-suggestions" data-reveal style="--delay:100ms">
+          <div class="section-heading section-heading-compact">
+            <p class="eyebrow">Gợi ý nhanh</p>
+            <h2>Một vài lựa chọn lưu trú đang có</h2>
+          </div>
+
+          <div class="not-found-room-list">
+            {featuredRooms.map((room) => (
+              <a class="not-found-room" href={`/phong-nghi/${room.slug}`}>
+                <img src={room.media[0]?.src ?? siteMeta.heroImage} alt={room.name} loading="lazy" />
+                <span>
+                  <strong>{room.name}</strong>
+                  <small>{room.guests} · {room.area}</small>
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</MainLayout>

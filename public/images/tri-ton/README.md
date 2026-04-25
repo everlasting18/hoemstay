@@ -1,14 +1,12 @@
-Replace these placeholder files with real photos from the Tri Ton tourist site.
+# Tri Ton Room Images
 
-Keep the same filenames so the website updates automatically without code changes.
+This folder currently contains only fallback room photos used by `src/data/site.ts`:
 
-Recommended image direction:
-- hero-main.svg: wide hero view of lake / hill / main entrance
-- hero-view.svg: supporting scenic shot
-- hero-contact.svg: branded contact / guest service photo
-- scene-lake.svg: lake or water activity view
-- scene-road.svg: internal path / palm / landscape access
-- scene-sunset.svg: sunset or hill view
-- stay-*.svg: accommodation photos
-- service-*.svg: service and activity photos
-- detail-*.svg: rest areas, signage, outdoor tables, small branded details
+- `stay-bungalow-main.jpg`
+- `stay-bungalow-detail.jpg`
+- `stay-family-main.jpg`
+- `stay-family-detail.jpg`
+- `stay-cabin-main.jpg`
+- `stay-cabin-detail.jpg`
+
+Replace these with real Windy Hill room photos before production launch while keeping the same filenames, or update `src/data/site.ts` and PocketBase records to point at the new URLs.

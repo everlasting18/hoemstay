@@ -1,13 +1,11 @@
 import type { APIRoute } from "astro";
-import { rooms } from "../data/site";
+import { getRooms } from "../lib/content";
+import { resolveSiteUrl, toAbsoluteUrl } from "../lib/site-url";
 
-const resolveSiteUrl = (site?: URL) => site ?? new URL(import.meta.env.PUBLIC_SITE_URL || "https://example.com");
-
-const toAbsoluteUrl = (path: string, site: URL) => new URL(path, site).toString();
-
-export const GET: APIRoute = ({ site }) => {
+export const GET: APIRoute = async ({ site }) => {
   const baseUrl = resolveSiteUrl(site);
   const lastmod = new Date().toISOString().slice(0, 10);
+  const rooms = await getRooms();
 
   const staticPaths = ["/"];
   const roomPaths = rooms.map((room) => `/phong-nghi/${room.slug}/`);

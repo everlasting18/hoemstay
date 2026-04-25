@@ -1,0 +1,191 @@
+{
+  "settings": [
+    {
+      "id": "mvpsettings001a",
+      "site_name": "Windy Hill",
+      "short_name": "Windy Hill",
+      "tagline": "HomeStay",
+      "description": "Landing page dịch vụ Windy Hill tại Tri Tôn, An Giang: cảnh đẹp, dịch vụ trải nghiệm và CTA liên hệ nhanh qua Zalo.",
+      "location": "Tri Tôn, An Giang",
+      "hero_title": "Windy Hill HomeStay",
+      "hero_subtitle": "Trải nghiệm Tri Tôn",
+      "hero_image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
+      "phone_display": "090 123 4567",
+      "phone_href": "tel:+84901234567",
+      "zalo_url": "https://zalo.me/84901234567",
+      "facebook_url": "https://facebook.com/khudulichtriton",
+      "email": "hello@khudulichtriton.vn",
+      "map_embed": "https://www.google.com/maps?q=Tri%20Ton%2C%20An%20Giang&z=12&output=embed"
+    }
+  ],
+  "hero_slides": [
+    {
+      "id": "mvpheroslide01a",
+      "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+      "title": "Mặt hồ buổi sáng",
+      "order": 1
+    },
+    {
+      "id": "mvpheroslide02a",
+      "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+      "title": "Cảnh đẹp Bảy Núi",
+      "order": 2
+    },
+    {
+      "id": "mvpheroslide03a",
+      "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80",
+      "title": "Hoàng hôn trên đồi",
+      "order": 3
+    }
+  ],
+  "rooms": [
+    {
+      "id": "mvpbungalow001a",
+      "slug": "bungalow-ven-ho",
+      "name": "Bungalow Ven Hồ",
+      "type": "Khu nghỉ đôi",
+      "summary": "Phòng nhỏ nhìn ra mặt nước và đồi xa, hợp khách đi đôi muốn ở yên và chụp ảnh đẹp.",
+      "description": "Không gian dùng bảng màu sáng, gỗ mộc và cửa kính lớn để bắt được nắng chiều Tri Tôn. Cảm giác ở đây nhẹ, thoáng và hợp với kiểu khách đi nghỉ ngắn ngày kết hợp tham quan.",
+      "guests": "2 khách",
+      "area": "30 m²",
+      "view": "View hồ & núi",
+      "highlight": "Hiên ngắm hoàng hôn",
+      "amenities": "[\"Giường queen bed\",\"Điều hòa & quạt trần\",\"Bàn trà ngoài hiên\",\"Phòng tắm riêng\",\"Nước suối & khăn sẵn\",\"Xe điện đón nội khu\"]",
+      "featured_images": "[\"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80\",\"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80\"]",
+      "order": 1
+    },
+    {
+      "id": "mvpfamilyroom01",
+      "slug": "nha-san-thot-not",
+      "name": "Nhà Sàn Thốt Nốt",
+      "type": "Khu nghỉ gia đình",
+      "summary": "Nhà sàn thoáng rộng cho gia đình hoặc nhóm nhỏ, nhìn ra vườn và lối đi nội khu.",
+      "description": "Mẫu lưu trú này phù hợp với khách đi theo nhóm, cần chỗ nghỉ sạch, thoải mái và gần các điểm check-in trong khu du lịch. Thiết kế ưu tiên sự mộc mạc và cảm giác gần cảnh quan miền Tây hơn là kiểu resort quá kiểu cách.",
+      "guests": "4 khách",
+      "area": "42 m²",
+      "view": "Vườn thốt nốt",
+      "highlight": "Sân ngồi sinh hoạt chung",
+      "amenities": "[\"2 giường đôi\",\"Khu ngồi uống trà\",\"Máy nước nóng\",\"Tủ lạnh mini\",\"Bàn ăn nhỏ\",\"Bãi đỗ xe gần phòng\"]",
+      "featured_images": "[\"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=900&q=80\",\"https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80\"]",
+      "order": 2
+    },
+    {
+      "id": "mvpcabinroom001",
+      "slug": "cabin-doi-cao",
+      "name": "Cabin Đồi Cao",
+      "type": "Cabin ngắm cảnh",
+      "summary": "Cabin riêng cho khách thích góc nhìn rộng, yên và lên hình đẹp vào sáng sớm hoặc chiều muộn.",
+      "description": "Cabin đặt ở vị trí cao hơn mặt bằng chung, phù hợp với khách thích ngắm cảnh, săn nắng đẹp và ở gần khu trải nghiệm ngoài trời. Đây là lựa chọn hợp với cặp đôi hoặc nhóm bạn nhỏ muốn ở tiện nhưng vẫn có chất riêng.",
+      "guests": "2 - 3 khách",
+      "area": "34 m²",
+      "view": "Đồi & ruộng xa",
+      "highlight": "Ban công nhìn toàn cảnh",
+      "amenities": "[\"Giường king bed\",\"Sofa bed phụ\",\"Cửa kính lớn\",\"Bộ bàn ghế balcony\",\"Điểm đón xe điện gần cabin\",\"Combo ăn sáng nội khu\"]",
+      "featured_images": "[\"https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80\",\"https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80\"]",
+      "order": 3
+    }
+  ],
+  "services": [
+    {
+      "id": "mvpservice001aa",
+      "name": "Xe điện tham quan nội khu",
+      "summary": "Di chuyển nhẹ nhàng qua hồ, khu check-in, vườn cây và điểm ngắm cảnh.",
+      "description": "Phù hợp cho gia đình có trẻ nhỏ hoặc khách đi đông, muốn tham quan trọn khu du lịch mà không phải đi bộ quá nhiều trong nắng.",
+      "timing": "08:00 - 18:00",
+      "image": "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1200&q=80",
+      "order": 1
+    },
+    {
+      "id": "mvpservice002aa",
+      "name": "Chèo sup & đạp vịt",
+      "summary": "Hoạt động nhẹ trên hồ, hợp khách trẻ và nhóm bạn thích vừa chơi vừa chụp ảnh.",
+      "description": "Đây là dịch vụ lên hình tốt, dễ bán và tạo cảm giác khu du lịch có trải nghiệm thật chứ không chỉ có cảnh để ngắm.",
+      "timing": "07:00 - 17:30",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "order": 2
+    },
+    {
+      "id": "mvpservice003aa",
+      "name": "Ẩm thực Bảy Núi",
+      "summary": "Khu ăn uống phục vụ món địa phương, set gia đình và bữa trưa đoàn.",
+      "description": "Nội dung dịch vụ nên nhấn vào sự đặc trưng vùng Tri Tôn: món địa phương dễ nhớ, trình bày sạch và có không gian ngồi thoáng cho nhóm khách lớn.",
+      "timing": "10:00 - 21:00",
+      "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80",
+      "order": 3
+    },
+    {
+      "id": "mvpservice004aa",
+      "name": "Cắm trại & lửa tối",
+      "summary": "Khu cỏ rộng cho nhóm bạn, lớp học, team building hoặc khách đi gia đình đông người.",
+      "description": "Hoạt động này giúp khu du lịch có thêm lý do để khách ở lại lâu hơn, nhất là các nhóm muốn kết hợp vui chơi ban ngày và sinh hoạt tối.",
+      "timing": "17:00 - 22:00",
+      "image": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80",
+      "order": 4
+    }
+  ],
+  "gallery": [
+    {
+      "id": "mvpgallery001aa",
+      "title": "Mặt hồ buổi sáng",
+      "caption": "Mặt hồ phẳng lặng, trong xanh – địa điểm lý tưởng để thư giãn và chụp ảnh buổi sáng.",
+      "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+      "category": "canh-quan",
+      "order": 1
+    },
+    {
+      "id": "mvpgallery002aa",
+      "title": "Đường dạo nội khu",
+      "caption": "Lối đi nội khu thoáng rộng, xanh mát quanh năm, thuận tiện cho xe điện và đi bộ tham quan.",
+      "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+      "category": "canh-quan",
+      "order": 2
+    },
+    {
+      "id": "mvpgallery003aa",
+      "title": "Bungalow view hồ",
+      "caption": "Phòng bungalow view hồ thoáng sáng, thiết kế mộc mạc hài hòa với cảnh quan thiên nhiên.",
+      "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+      "category": "luu-tru",
+      "order": 3
+    },
+    {
+      "id": "mvpgallery004aa",
+      "title": "Trải nghiệm trên hồ",
+      "caption": "Chèo SUP và đạp vịt trên mặt hồ – trải nghiệm nhẹ nhàng, thú vị và lên hình đẹp.",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "category": "trai-nghiem",
+      "order": 4
+    },
+    {
+      "id": "mvpgallery005aa",
+      "title": "Góc nghỉ chân",
+      "caption": "Góc nghỉ chân xanh mát, thiết kế hài hòa với khung cảnh thiên nhiên xung quanh.",
+      "image": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80",
+      "category": "check-in",
+      "order": 5
+    }
+  ],
+  "reviews": [
+    {
+      "id": "mvpreview001aaa",
+      "name": "Ngọc Diễm",
+      "origin": "Long Xuyên",
+      "quote": "Cảnh quan Tri Tôn đẹp và hoang sơ, không thua gì ảnh trên mạng. Đặc biệt là hoàng hôn trên đồi – mình chụp được rất nhiều ảnh đẹp trong buổi chiều đó.",
+      "is_featured": true
+    },
+    {
+      "id": "mvpreview002aaa",
+      "name": "Phú & Gia đình",
+      "origin": "Cần Thơ",
+      "quote": "Gia đình mình đi 4 người, 2 ngày 1 đêm. Xe điện nội khu tiện lắm, đồ ăn ngon đúng chất địa phương. Bọn trẻ thích mê sup trên hồ, đòi đi lại lần thứ hai.",
+      "is_featured": false
+    },
+    {
+      "id": "mvpreview003aaa",
+      "name": "Thảo Vy",
+      "origin": "TP.HCM",
+      "quote": "Lần đầu đến Tri Tôn mà cảm giác như đã quen chỗ rồi. Nhân viên nhiệt tình, cabin view đồi rất đẹp và yên tĩnh – đúng thứ mình cần sau tuần làm việc mệt.",
+      "is_featured": false
+    }
+  ]
+}

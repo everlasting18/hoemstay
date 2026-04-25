@@ -1,20 +1,16 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
-import type { Room, RoomMedia } from "../../data/site";
-import { rooms, siteMeta } from "../../data/site";
+import { getContent, getRoomBySlug } from "../../lib/content";
+import { resolveSiteUrl, toAbsoluteUrl } from "../../lib/site-url";
 
-export function getStaticPaths() {
-  return rooms.map((room) => ({
-    params: { slug: room.slug },
-    props: { room }
-  }));
+const { slug } = Astro.params;
+const room = slug ? await getRoomBySlug(slug) : null;
+
+if (!room) {
+  return Astro.redirect("/404");
 }
 
-interface Props {
-  room: Room;
-}
-
-const { room } = Astro.props as Props;
+const { rooms, siteMeta } = await getContent();
 const relatedRooms = rooms.filter((item) => item.slug !== room.slug).slice(0, 2);
 const roomIndex = Math.max(
   0,
@@ -22,37 +18,17 @@ const roomIndex = Math.max(
 );
 const roomOrder = String(roomIndex + 1).padStart(2, "0");
 const pageTitle = `${room.name} | Chi tiết phòng`;
-const pageDescription = `${room.summary} ${room.description}`;
-const roomGallery: RoomMedia[] =
-  room.media?.length
-    ? room.media.filter((item) => item?.src?.trim().length > 0)
-    : room.images
-        .filter(Boolean)
-        .map((src, index) => ({
-          type: "image" as const,
-          src,
-          title: index === 0 ? room.name : undefined
-        }));
-const roomGalleryMain = roomGallery[0] ?? {
-  type: "image" as const,
-  src: siteMeta.heroImage,
-  title: room.name
-};
-const roomGalleryRest = roomGallery.slice(1);
-const roomGalleryGridMode =
-  roomGalleryRest.length <= 3
-    ? "is-simple"
-    : roomGalleryRest.length <= 6
-      ? "is-balanced"
-      : "is-rich";
-const roomGalleryImageCount = roomGallery.filter((item) => item.type === "image").length;
-const roomGalleryVideoCount = roomGallery.filter((item) => item.type === "video").length;
-const siteOrigin = Astro.site ?? new URL("https://example.com");
-const roomUrl = new URL(`/phong-nghi/${room.slug}/`, siteOrigin).toString();
-const roomImagesForSchema = roomGallery
-  .filter((media) => media.type === "image")
+const descriptionPlainText = room.description.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+const pageDescription = `${room.summary} ${descriptionPlainText}`;
+const roomMedia = room.media.filter((item) => item.src.trim().length > 0);
+const roomGalleryItems = roomMedia.length ? roomMedia : [{ type: "image" as const, src: siteMeta.heroImage, title: room.name }];
+const roomGalleryMain = roomGalleryItems[0];
+const siteOrigin = resolveSiteUrl(Astro.site);
+const roomUrl = toAbsoluteUrl(`/phong-nghi/${room.slug}/`, siteOrigin);
+const roomImagesForSchema = roomMedia
+  .filter((item) => item.type === "image")
   .slice(0, 8)
-  .map((media) => new URL(media.src, siteOrigin).toString());
+  .map((item) => toAbsoluteUrl(item.src, siteOrigin));
 const roomStructuredData = [
   {
     "@context": "https://schema.org",
@@ -62,13 +38,13 @@ const roomStructuredData = [
         "@type": "ListItem",
         position: 1,
         name: "Trang chủ",
-        item: new URL("/", siteOrigin).toString()
+        item: toAbsoluteUrl("/", siteOrigin)
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Phòng nghỉ",
-        item: new URL("/#phong-nghi", siteOrigin).toString()
+        item: toAbsoluteUrl("/#phong-nghi", siteOrigin)
       },
       {
         "@type": "ListItem",
@@ -82,9 +58,9 @@ const roomStructuredData = [
     "@context": "https://schema.org",
     "@type": "HotelRoom",
     name: room.name,
-    description: room.description,
+    description: descriptionPlainText,
     url: roomUrl,
-    image: roomImagesForSchema.length ? roomImagesForSchema : [new URL(roomGalleryMain.src, siteOrigin).toString()],
+    image: roomImagesForSchema.length ? roomImagesForSchema : [toAbsoluteUrl(roomGalleryMain.src, siteOrigin)],
     occupancy: {
       "@type": "QuantitativeValue",
       value: Number(room.guests.match(/\d+/)?.[0] ?? 2)
@@ -124,15 +100,63 @@ const roomStructuredData = [
       </nav>
 
       <article class="room-detail-hero-panel" data-reveal>
-        <div class="room-detail-hero-media">
-          <img src={room.images[0]} alt={room.name} loading="eager" />
+        <div class="room-detail-hero-media room-hero-gallery" data-room-hero-gallery>
+          <div class="room-hero-main-stack">
+            {roomGalleryItems.map((media, index) => (
+              <figure
+                class:list={["room-hero-shot", { "is-active": index === 0, "is-video": media.type === "video" }]}
+                data-hero-panel
+                aria-hidden={index === 0 ? "false" : "true"}
+              >
+                {media.type === "video" ? (
+                  <video controls playsinline preload="metadata" poster={media.poster ?? siteMeta.heroImage}>
+                    <source src={media.src} />
+                  </video>
+                ) : (
+                  <img src={media.src} alt={media.title ?? `${room.name} - góc ${index + 1}`} loading={index === 0 ? "eager" : "lazy"} />
+                )}
+                {media.type === "video" && <span class="room-media-badge">Video</span>}
+              </figure>
+            ))}
+          </div>
+
+          {roomGalleryItems.length > 1 && (
+            <div class="room-hero-thumb-list" aria-label="Danh sách ảnh nổi bật của phòng">
+              {roomGalleryItems.map((media, index) => (
+                <button
+                  class:list={["room-hero-thumb", { "is-active": index === 0 }]}
+                  type="button"
+                  data-hero-thumb
+                  data-hero-index={index}
+                  aria-label={`Xem ${media.title ?? `${room.name} - ảnh ${index + 1}`}`}
+                  aria-pressed={index === 0 ? "true" : "false"}
+                >
+                  {media.type === "video" ? (
+                    <>
+                      <video muted playsinline preload="metadata" poster={media.poster ?? siteMeta.heroImage}>
+                        <source src={media.src} />
+                      </video>
+                      <span class="room-thumb-play" aria-hidden="true">▶</span>
+                    </>
+                  ) : (
+                    <img src={media.src} alt="" loading="lazy" />
+                  )}
+                  <span class="room-hero-thumb-progress" aria-hidden="true"></span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div class="room-detail-hero-content">
           <p class="eyebrow">Phòng lưu trú {roomOrder}</p>
           <h1>{room.name}</h1>
           <p class="room-detail-summary">{room.summary}</p>
-          <p>{room.description}</p>
+
+          <div class="room-hero-meta">
+            <span>{room.type}</span>
+            <span>{room.highlight}</span>
+          </div>
 
           <div class="room-detail-stats">
             <article class="page-stat">
@@ -162,80 +186,17 @@ const roomStructuredData = [
     </div>
   </section>
 
-  <section class="section room-detail-gallery-section">
-    <div class="container">
-      <div class="section-heading section-heading-compact" data-reveal>
-        <p class="eyebrow">Hình ảnh phòng</p>
-        <h2>Góc chụp thực tế của {room.name}</h2>
-        <p>Ảnh và video thực tế giúp khách hình dung rõ bố cục phòng, tầm nhìn và trải nghiệm lưu trú.</p>
-      </div>
-
-      <div class="room-gallery-toolbar" data-reveal style="--delay:70ms">
-        <p class="room-gallery-caption">Bộ media thật tại chỗ, phù hợp khi cần mô tả phòng với nhiều góc quay.</p>
-        <div class="room-gallery-stats">
-          <span class="chip">{roomGalleryImageCount} ảnh</span>
-          {roomGalleryVideoCount > 0 && <span class="chip">{roomGalleryVideoCount} video</span>}
-          <span class="chip">{roomGallery.length} media</span>
-        </div>
-      </div>
-
-      <div class="room-detail-gallery-shell" data-reveal>
-        <article class:list={["room-detail-gallery-item room-detail-gallery-main", { "is-video": roomGalleryMain.type === "video" }]}>
-          {roomGalleryMain.type === "video" ? (
-            <video controls playsinline preload="metadata" poster={roomGalleryMain.poster ?? room.images[0] ?? siteMeta.heroImage}>
-              <source src={roomGalleryMain.src} />
-            </video>
-          ) : (
-            <img src={roomGalleryMain.src} alt={roomGalleryMain.title ?? `${room.name} - không gian chính`} loading="eager" />
-          )}
-          {roomGalleryMain.type === "video" && <span class="room-media-badge">Video</span>}
-          <div class="room-media-caption">
-            <strong>{roomGalleryMain.title ?? `${room.name} - góc nổi bật`}</strong>
-          </div>
-        </article>
-
-        {
-          roomGalleryRest.length > 0 && (
-            <div class:list={["room-detail-gallery-grid", roomGalleryGridMode]}>
-              {roomGalleryRest.map((media, index) => (
-                <article class:list={["room-detail-gallery-item room-detail-gallery-tile", { "is-video": media.type === "video" }]}>
-                  {media.type === "video" ? (
-                    <video controls playsinline preload="metadata" poster={media.poster ?? room.images[0] ?? siteMeta.heroImage}>
-                      <source src={media.src} />
-                    </video>
-                  ) : (
-                    <img src={media.src} alt={media.title ?? `${room.name} - ảnh ${index + 2}`} loading="lazy" />
-                  )}
-                  {media.type === "video" && <span class="room-media-badge">Video</span>}
-                  {media.title && (
-                    <div class="room-media-caption room-media-caption-small">
-                      <strong>{media.title}</strong>
-                    </div>
-                  )}
-                </article>
-              ))}
-            </div>
-          )
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-muted">
-    <div class="container room-detail-grid">
-      <article class="room-detail-card" data-reveal>
-        <p class="eyebrow">Tiện nghi</p>
-        <h2>Tiện nghi có sẵn trong phòng</h2>
-        <ul class="room-detail-amenities">
-          {room.amenities.map((amenity) => (
-            <li>{amenity}</li>
-          ))}
-        </ul>
+  <section class="section room-overview-section">
+    <div class="container room-overview-grid">
+      <article class="room-overview-copy" data-reveal>
+        <p class="eyebrow">Tổng quan lưu trú</p>
+        <h2>Không gian, trải nghiệm và bố cục phòng</h2>
+        <div class="room-detail-description" set:html={room.description} />
       </article>
 
-      <article class="room-detail-card" data-reveal style="--delay:100ms">
+      <aside class="room-booking-card" data-reveal style="--delay:100ms">
         <p class="eyebrow">Thông tin nhanh</p>
-        <h2>Chi tiết bố cục & vận hành</h2>
+        <h2>Nên biết trước khi đặt</h2>
         <ul class="room-detail-facts">
           <li>
             <strong>Loại phòng</strong>
@@ -258,6 +219,28 @@ const roomStructuredData = [
             <span>Trước 12:00</span>
           </li>
         </ul>
+        <div class="quick-links">
+          <a class="btn btn-primary" href={siteMeta.contact.zalo} target="_blank" rel="noreferrer">
+            Hỏi phòng trống
+          </a>
+          <a class="btn btn-secondary" href={siteMeta.contact.phoneHref}>
+            Gọi ngay
+          </a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-muted">
+    <div class="container">
+      <article class="room-detail-card room-detail-card-wide" data-reveal>
+        <p class="eyebrow">Tiện nghi</p>
+        <h2>Tiện nghi có sẵn trong phòng</h2>
+        <ul class="room-detail-amenities">
+          {room.amenities.map((amenity) => (
+            <li>{amenity}</li>
+          ))}
+        </ul>
       </article>
     </div>
   </section>
@@ -279,7 +262,7 @@ const roomStructuredData = [
                 aria-label={`Xem chi tiết phòng ${item.name}`}
               ></a>
               <div class="card-media">
-                <img src={item.images[0]} alt={item.name} loading="lazy" />
+                <img src={item.media[0].src} alt={item.name} loading="lazy" />
               </div>
               <div class="card-body">
                 <span class="card-tag">{item.type}</span>
@@ -299,4 +282,50 @@ const roomStructuredData = [
       </div>
     </section>
   )}
+
+  <script is:inline>
+    document.querySelectorAll("[data-room-hero-gallery]").forEach((gallery) => {
+      const panels = Array.from(gallery.querySelectorAll("[data-hero-panel]"));
+      const thumbs = Array.from(gallery.querySelectorAll("[data-hero-thumb]"));
+      let activeIndex = 0;
+      let timer = null;
+
+      const setActiveHeroMedia = (nextIndex) => {
+        if (!panels.length) return;
+        activeIndex = (nextIndex + panels.length) % panels.length;
+
+        panels.forEach((panel, index) => {
+          const isActive = index === activeIndex;
+          panel.classList.toggle("is-active", isActive);
+          panel.setAttribute("aria-hidden", String(!isActive));
+
+          const video = panel.querySelector("video");
+          if (video && !isActive) video.pause();
+        });
+
+        thumbs.forEach((thumb, index) => {
+          const isActive = index === activeIndex;
+          thumb.classList.toggle("is-active", isActive);
+          thumb.setAttribute("aria-pressed", String(isActive));
+        });
+      };
+
+      const startHeroRotation = () => {
+        if (panels.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        window.clearInterval(timer);
+        timer = window.setInterval(() => setActiveHeroMedia(activeIndex + 1), 3600);
+      };
+
+      thumbs.forEach((thumb) => {
+        thumb.addEventListener("click", () => {
+          setActiveHeroMedia(Number(thumb.dataset.heroIndex || 0));
+          startHeroRotation();
+        });
+      });
+
+      gallery.addEventListener("mouseenter", () => window.clearInterval(timer));
+      gallery.addEventListener("mouseleave", startHeroRotation);
+      startHeroRotation();
+    });
+  </script>
 </MainLayout>

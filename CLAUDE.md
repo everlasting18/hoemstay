@@ -1,63 +1,70 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides implementation context for agents working in this repository.
 
-## Project Overview
+## Overview
 
-Single-page Astro landing site for **Tri Tôn Ecotourism Resort** (An Giang, Vietnam). All content is in Vietnamese.
+This repo contains a Vietnamese homestay showcase for **Windy Hill** in Tri Ton, An Giang.
+
+- Public site: Astro static site in `src/`
+- Admin CMS: Vite + React app in `admin/`
+- Content backend: PocketBase MVP schema and seed data in `pocketbase/mvp/`
+- Local fallback content: `src/data/site.ts`
 
 ## Commands
 
+Run from the repository root:
+
 ```bash
-npm run dev       # Start dev server (hot reload)
-npm run build     # Production build → dist/
-npm run preview   # Preview production build locally
-npm run check     # TypeScript type checking (astro check)
+npm run dev
+npm run check
+npm run build
+npm run preview
+npm run pb:mvp:setup
+npm run pb:check
 ```
 
-No test framework or linter is configured.
+Run admin commands from `admin/`:
 
-## Architecture
+```bash
+npm run dev
+npm run check
+npm run build
+```
 
-### Data Layer
+## Public Site
 
-**`src/data/site.ts`** is the single source of truth for all content: navigation, room types, services, gallery collections, reviews, itinerary stops, and contact info. All content edits go here. TypeScript types (`Room`, `Service`, `GalleryItem`, `ItineraryStop`, etc.) are defined and exported from this file.
+- `src/pages/index.astro`: homepage sections, hero carousel, services, rooms, gallery, reviews, and contact CTA
+- `src/pages/phong-nghi/[slug].astro`: generated room detail pages
+- `src/layouts/MainLayout.astro`: document shell, SEO tags, header/footer, floating actions, and shared scroll animation script
+- `src/components/`: shared Astro components
+- `src/styles/global.css`: global site styles
 
-### Page & Layout
+Content loading starts in `src/lib/content.ts`. It fetches PocketBase records at build time when `PUBLIC_POCKETBASE_URL` is set, otherwise it falls back to `src/data/site.ts`. Set `PUBLIC_REQUIRE_CMS=true` in production if builds must fail when PocketBase is unavailable.
 
-- `src/pages/index.astro` — The only page (779 lines). Contains the full page section layout: Hero → Story → Itinerary → Services → Gallery → Audience → Reviews → Contact CTA.
-- `src/layouts/MainLayout.astro` — HTML shell with SEO meta tags, font loading, scroll progress bar, and global script initialization.
+## Admin App
 
-### Components
+The admin app uses PocketBase superuser auth and edits these collections:
 
-Reusable components in `src/components/`:
-- `Header.astro` — Fixed nav with hamburger menu (inline script handles mobile toggle)
-- `Footer.astro` — Brand info and section links
-- `FloatActions.astro` — Fixed Zalo/call buttons (sticky mobile CTA)
-- `ContactForm.astro` — 3-field form; on submit, copies a pre-formatted Zalo message to clipboard and redirects to Zalo chat
+- `settings`
+- `hero_slides`
+- `rooms`
+- `services`
+- `gallery`
+- `reviews`
 
-### Styling
+Collection fields are configured in `admin/src/config/collections.ts`. Shared API helpers live in `admin/src/lib/`. Cloudinary upload is optional and configured through `admin/.env`.
 
-`src/styles/global.css` (3100+ lines) is the sole stylesheet. It defines:
-- CSS custom properties: color palette (`--color-primary`, `--color-accent`, etc.), spacing tokens, border radii, shadow levels
-- Typography: Cormorant Garamond (headings) + Plus Jakarta Sans (body)
-- All component and layout styles; no CSS framework is used
+## Assets
 
-### Client-Side Interactivity
+Static public assets live in `public/`. Current fallback room photos are in `public/images/tri-ton/`; homepage scenic/service placeholders are in `public/images/views/`.
 
-All JS is inline scripts (no separate JS files). Key behaviors:
-- **Hero carousel** — Auto-rotates every 4s, pauses on hover/touch
-- **Mobile snap carousels** — Itinerary, services, and reviews sections use scroll-snap with indicator dots
-- **Scroll animations** — Motion library (`motion` npm package) drives fade-in reveals and itinerary story-beat highlighting
-- **Gallery** — Parallax-like focus effect on card hover
-- **ContactForm** — Constructs a Vietnamese Zalo message from form fields, copies to clipboard, then opens Zalo URL
+Build output and dependency folders are intentionally ignored:
 
-### Images
+- `dist/`
+- `admin/dist/`
+- `.astro/`
+- `node_modules/`
+- `admin/node_modules/`
 
-All images live in `public/images/tri-ton/`. SVG files are placeholder stubs; JPG files are production assets. The `README.md` in that folder describes the expected image filenames and dimensions.
-
-## Key Conventions
-
-- All page content (text, images paths, metadata) is defined in `src/data/site.ts` — avoid hardcoding strings in `.astro` files when the content belongs to site data.
-- Astro's `site` is set to `https://example.com` in `astro.config.mjs` — update this before deploying.
-- Motion animations use `inView` + `animate` from the `motion` package; keep animation logic inline with the relevant section.
+Do not commit `.env` files, PocketBase credentials, or Cloudinary secrets. Keep only `.env.example` templates.

@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Family stay detail placeholder">
-  <rect width="1200" height="900" fill="#f3ecdf"/>
-  <rect x="120" y="150" width="960" height="600" rx="36" fill="#fffaf1" stroke="#d8cfbf" stroke-width="8"/>
-  <rect x="200" y="230" width="320" height="220" rx="20" fill="#d8be98"/>
-  <rect x="560" y="230" width="320" height="220" rx="20" fill="#d8be98"/>
-  <rect x="260" y="510" width="540" height="150" rx="22" fill="#d8e1cf"/>
-  <text x="120" y="106" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700">STAY FAMILY DETAIL</text>
-  <text x="120" y="810" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="26">Use second angle, outdoor deck, or family common-area photo</text>
-</svg>

@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Signage detail placeholder">
-  <rect width="1200" height="900" fill="#efe4d5"/>
-  <rect y="640" width="1200" height="260" fill="#8ca06b"/>
-  <rect x="502" y="250" width="28" height="440" fill="#7a5c39"/>
-  <rect x="355" y="260" width="300" height="160" rx="24" fill="#fffaf1" stroke="#d8cfbf" stroke-width="8"/>
-  <text x="415" y="350" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700">TRI TON</text>
-  <text x="86" y="126" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="50" font-weight="700">DETAIL SIGNAGE / BRAND</text>
-  <text x="86" y="186" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="26">Replace with signboard, logo point, gate, or identity detail image</text>
-</svg>

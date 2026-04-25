@@ -1,49 +1,38 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This project is a single-page Astro landing site for Tri Tôn (An Giang).
-- `src/pages/index.astro`: main page composition and section flow.
-- `src/layouts/MainLayout.astro`: HTML shell, metadata, global script bootstrapping.
-- `src/components/`: reusable UI blocks (`Header`, `Footer`, `FloatActions`, `ContactForm`, `PageHero`).
-- `src/data/site.ts`: single source of truth for content (navigation, rooms, services, gallery, contact).
-- `src/styles/global.css`: global styling tokens and section/component styles.
-- `public/images/tri-ton/`: production image assets and attribution docs.
-- `dist/`: build output (generated; do not edit manually).
+This repository contains an Astro public site and a Vite/React admin panel. Site pages live in `src/pages/`, layout in `src/layouts/`, components in `src/components/`, and global styles in `src/styles/global.css`. Site data and contact details are centralized in `src/data/site.ts`; CMS/content helpers are in `src/lib/`. Static assets belong in `public/`, especially `public/images/`.
+
+The admin app is under `admin/`, with React source in `admin/src/`, UI primitives in `admin/src/components/ui/`, and collection config in `admin/src/config/collections.ts`. PocketBase schema, seed data, and CSV imports are in `pocketbase/mvp/`; setup notes are in `docs/`.
 
 ## Build, Test, and Development Commands
-- `npm install`: install dependencies.
-- `npm run dev` (or `npm run start`): run local dev server with hot reload.
-- `npm run build`: create production output in `dist/`.
+Run site commands from the repository root:
+
+- `npm install`: install Astro dependencies.
+- `npm run dev`: start the Astro dev server.
+- `npm run check`: run Astro and TypeScript validation.
+- `npm run build`: build the production site into `dist/`.
 - `npm run preview`: preview the built site locally.
-- `npm run check`: run Astro + TypeScript checks.
+- `npm run pb:mvp:setup`: initialize the PocketBase MVP content.
+- `npm run pb:check`: validate PocketBase content assumptions.
+
+Run admin commands from `admin/`:
+
+- `npm install`: install admin dependencies.
+- `npm run dev`: start the Vite admin app.
+- `npm run check`: run TypeScript checks.
+- `npm run build`: build the admin bundle.
 
 ## Coding Style & Naming Conventions
-Use TypeScript + ESM, with 2-space indentation and semicolons as in existing files.
-- Keep content in `src/data/site.ts`; avoid hardcoding copy in component/page templates.
-- Use PascalCase for component filenames (e.g., `PageHero.astro`).
-- Use camelCase for variables/functions, kebab-case for section anchors/IDs.
-- Prefer small, focused inline scripts near the section they control.
+Use TypeScript and ESM imports. Match the existing 2-space indentation and semicolon style. Name Astro and React components in PascalCase, such as `Header.astro` or `RecordEditor.tsx`. Use camelCase for variables, hooks, and helpers; use kebab-case for routes and slugs such as `phong-nghi`. Keep business copy and contact details in data/config files.
 
 ## Testing Guidelines
-There is currently no automated test framework. Required validation for each change:
-1. Run `npm run check`.
-2. Run `npm run build`.
-3. Manually verify key flows in desktop and mobile (hero carousel motion, navigation anchors, Zalo/hotline CTA, contact form behavior).
-
-If a test framework is introduced later, place tests under `src/**/__tests__` or `tests/` with `*.test.*` naming.
+There is no dedicated test suite yet. Before handoff, run `npm run check` and `npm run build` for the site, plus the same commands in `admin/` when admin files change. Manually verify responsive navigation, room detail pages, contact actions, image rendering, and admin CRUD workflows. If tests are added, prefer `*.test.ts` or `*.test.tsx` near the code or under `tests/`.
 
 ## Commit & Pull Request Guidelines
-No Git history is available in this workspace, so follow Conventional Commits:
-- `feat(hero): refine carousel transition timing`
-- `fix(mobile): prevent hero card overflow on 390px`
+Current history uses short descriptive subjects, for example `Initial commit - homestay website`. Keep commits concise and action-oriented; Conventional Commits such as `feat(admin): add gallery sorting` are encouraged.
 
-For PRs, include:
-- Clear scope and user-facing impact.
-- Linked issue/task (if available).
-- Before/after screenshots for desktop + mobile.
-- Notes on commands run (`check`, `build`) and any known limitations.
+Pull requests should describe scope, user-facing impact, linked tasks, screenshots for UI changes, and the commands run for verification.
 
-## Configuration & Content Safety
-- Update `astro.config.mjs` `site` URL before deployment.
-- Keep contact links/phone/Zalo IDs in `src/data/site.ts`.
-- Add image attribution updates when new assets are introduced.
+## Security & Configuration Tips
+Do not commit secrets, PocketBase admin credentials, or private API keys. Keep deployment URLs in `astro.config.mjs` and public contact/map links in `src/data/site.ts` accurate.

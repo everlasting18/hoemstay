@@ -1,5 +1,11 @@
 ---
-import { siteMeta } from "../data/site";
+import type { SiteMeta } from "../lib/content.types";
+
+interface Props {
+  siteMeta: SiteMeta;
+}
+
+const { siteMeta } = Astro.props as Props;
 ---
 
 <div class="floating-actions" aria-label="Liên hệ nổi">

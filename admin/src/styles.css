@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: oklch(0.985 0.003 95);
+  --color-foreground: oklch(0.2 0.01 260);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.2 0.01 260);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.2 0.01 260);
+  --color-primary: oklch(0.43 0.08 142);
+  --color-primary-foreground: oklch(0.98 0.004 95);
+  --color-secondary: oklch(0.95 0.01 95);
+  --color-secondary-foreground: oklch(0.25 0.01 260);
+  --color-muted: oklch(0.96 0.006 95);
+  --color-muted-foreground: oklch(0.5 0.01 260);
+  --color-accent: oklch(0.93 0.016 144);
+  --color-accent-foreground: oklch(0.26 0.02 145);
+  --color-destructive: oklch(0.57 0.19 26);
+  --color-destructive-foreground: oklch(0.98 0 0);
+  --color-border: oklch(0.9 0.006 95);
+  --color-input: oklch(0.9 0.006 95);
+  --color-ring: oklch(0.5 0.09 145);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground antialiased;
+    background-image:
+      radial-gradient(circle at top, rgba(81, 116, 91, 0.09), transparent 28%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(245, 242, 235, 0.95));
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply min-h-screen;
+  }
+
+  .app-container {
+    @apply mx-auto flex min-h-screen max-w-[1680px] flex-col lg:flex-row;
+  }
+}

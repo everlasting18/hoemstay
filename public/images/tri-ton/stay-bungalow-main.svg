@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" role="img" aria-label="Bungalow placeholder">
-  <rect width="1400" height="1000" fill="#efe6d9"/>
-  <rect x="190" y="240" width="1020" height="560" rx="38" fill="#fffaf1" stroke="#d8cfbf" stroke-width="8"/>
-  <rect x="270" y="320" width="500" height="400" rx="24" fill="#ddc3a1"/>
-  <rect x="820" y="320" width="310" height="160" rx="20" fill="#ede4d7"/>
-  <rect x="820" y="520" width="310" height="200" rx="20" fill="#ede4d7"/>
-  <text x="270" y="142" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">STAY BUNGALOW MAIN</text>
-  <text x="270" y="860" fill="#31442e" font-family="Arial, Helvetica, sans-serif" font-size="28">Replace with wide photo of bungalow / room / main bed + window</text>
-</svg>

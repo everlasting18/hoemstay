@@ -1,5 +1,13 @@
 ---
-import { navigation, siteMeta } from "../data/site";
+import type { NavItem } from "../data/site";
+import type { SiteMeta } from "../lib/content.types";
+
+interface Props {
+  navigation: NavItem[];
+  siteMeta: SiteMeta;
+}
+
+const { navigation, siteMeta } = Astro.props as Props;
 
 const brandInitials =
   siteMeta.shortName

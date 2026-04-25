@@ -1,5 +1,13 @@
 ---
-import { navigation, siteMeta } from "../data/site";
+import type { NavItem } from "../data/site";
+import type { SiteMeta } from "../lib/content.types";
+
+interface Props {
+  navigation: NavItem[];
+  siteMeta: SiteMeta;
+}
+
+const { navigation, siteMeta } = Astro.props as Props;
 
 const brandInitials =
   siteMeta.shortName
@@ -23,8 +31,8 @@ const brandInitials =
 
       <nav class="site-nav" aria-label="Điều hướng chính">
         {
-          navigation.map((item, index) => (
-            <a class:list={["nav-link", { active: index === 0 }]} href={item.href}>
+          navigation.map((item) => (
+            <a class="nav-link" href={item.href}>
               {item.label}
             </a>
           ))
@@ -135,5 +143,43 @@ const brandInitials =
         closeMenu();
       }
     });
+  }
+
+  function initScrollSpy() {
+    const navLinks = document.querySelectorAll(".site-nav .nav-link");
+    const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+    const sections = document.querySelectorAll("section[id]");
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("id");
+            navLinks.forEach((link) => {
+              const href = link.getAttribute("href") || "";
+              link.classList.toggle("active", href.endsWith(`#${id}`));
+            });
+            mobileLinks.forEach((link) => {
+              const href = link.getAttribute("href") || "";
+              link.classList.toggle("active", href.endsWith(`#${id}`));
+            });
+          }
+        });
+      },
+      {
+        rootMargin: "-40% 0px -40% 0px",
+        threshold: 0
+      }
+    );
+
+    sections.forEach((section) => {
+      sectionObserver.observe(section);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollSpy);
+  } else {
+    initScrollSpy();
   }
 </script>

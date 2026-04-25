@@ -2,7 +2,8 @@
 import FloatActions from "../components/FloatActions.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import { siteMeta } from "../data/site";
+import { getContent } from "../lib/content";
+import { isPlaceholderSite, resolveSiteUrl, toAbsoluteUrl } from "../lib/site-url";
 import "../styles/global.css";
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
   ogType?: string;
 }
 
+const { navigation, siteMeta } = await getContent();
+
 const {
   title = siteMeta.name,
   description = siteMeta.description,
@@ -24,10 +27,10 @@ const {
 } = Astro.props;
 
 const fullTitle = title === siteMeta.name ? title : `${title} | ${siteMeta.name}`;
-const siteOrigin = Astro.site ?? new URL("https://example.com");
-const canonical = new URL(Astro.url.pathname, siteOrigin).toString();
-const absoluteImage = new URL(image, siteOrigin).toString();
-const isPlaceholderDomain = siteOrigin.hostname === "example.com";
+const siteOrigin = resolveSiteUrl(Astro.site);
+const canonical = toAbsoluteUrl(Astro.url.pathname, siteOrigin);
+const absoluteImage = toAbsoluteUrl(image, siteOrigin);
+const isPlaceholderDomain = isPlaceholderSite(siteOrigin);
 const robotsDirective = noindex || isPlaceholderDomain ? "noindex, nofollow" : "index, follow, max-image-preview:large";
 ---
 
@@ -65,12 +68,12 @@ const robotsDirective = noindex || isPlaceholderDomain ? "noindex, nofollow" : "
     <div class="scroll-progress" aria-hidden="true">
       <span class="scroll-progress-bar" data-scroll-progress></span>
     </div>
-    <Header />
+    <Header navigation={navigation} siteMeta={siteMeta} />
     <main>
       <slot />
     </main>
-    <Footer />
-    <FloatActions />
+    <Footer navigation={navigation} siteMeta={siteMeta} />
+    <FloatActions siteMeta={siteMeta} />
 
     <script>
       import { animate, inView, scroll } from "motion";
@@ -81,7 +84,6 @@ const robotsDirective = noindex || isPlaceholderDomain ? "noindex, nofollow" : "
       const revealItems = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
       const progressBar = document.querySelector<HTMLElement>("[data-scroll-progress]");
       const heroDepth = document.querySelector<HTMLElement>("[data-scroll-hero]");
-      const galleryDepth = document.querySelector<HTMLElement>("[data-scroll-gallery]");
       const galleryMotionSections = Array.from(document.querySelectorAll<HTMLElement>(".gallery-motion"));
       const itineraryStories = Array.from(document.querySelectorAll<HTMLElement>("[data-itinerary-story]"));
 
@@ -193,36 +195,24 @@ const robotsDirective = noindex || isPlaceholderDomain ? "noindex, nofollow" : "
           );
         }
 
-        if (galleryDepth) {
-          scroll(
-            (progress: number) => {
-              galleryDepth.style.setProperty("--gallery-scroll-progress", progress.toFixed(3));
+        if (!prefersReducedMotion && "IntersectionObserver" in window && galleryMotionSections.length) {
+          const galleryAnimationObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                const target = entry.target as HTMLElement;
+                target.classList.toggle("is-animating", entry.isIntersecting);
+              });
             },
             {
-              target: galleryDepth,
-              offset: ["start end", "end start"]
+              threshold: [0, 0.08, 0.25]
             }
           );
+
+          galleryMotionSections.forEach((section) => galleryAnimationObserver.observe(section));
         }
+
+        itineraryStories.forEach(setupItineraryStory);
       }
-
-      if (!prefersReducedMotion && "IntersectionObserver" in window && galleryMotionSections.length) {
-        const galleryAnimationObserver = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              const target = entry.target as HTMLElement;
-              target.classList.toggle("is-animating", entry.isIntersecting);
-            });
-          },
-          {
-            threshold: [0, 0.08, 0.25]
-          }
-        );
-
-        galleryMotionSections.forEach((section) => galleryAnimationObserver.observe(section));
-      }
-
-      itineraryStories.forEach(setupItineraryStory);
     </script>
   </body>
 </html>

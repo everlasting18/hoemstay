@@ -5,6 +5,8 @@
     "**/*"
   ],
   "exclude": [
-    "dist"
+    "dist",
+    "admin",
+    "node_modules"
   ]
 }

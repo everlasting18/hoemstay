@@ -5,6 +5,10 @@ export type NavItem = {
   label: string;
 };
 
+export type MediaItem =
+  | { type: "image"; src: string; title?: string }
+  | { type: "video"; src: string; poster?: string; title?: string };
+
 export type Room = {
   slug: string;
   name: string;
@@ -16,15 +20,7 @@ export type Room = {
   view: string;
   highlight: string;
   amenities: string[];
-  images: string[];
-  media?: RoomMedia[];
-};
-
-export type RoomMedia = {
-  type: "image" | "video";
-  src: string;
-  poster?: string;
-  title?: string;
+  media: MediaItem[];
 };
 
 export type Service = {
@@ -39,56 +35,41 @@ export type GalleryItem = {
   title: string;
   caption: string;
   image: string;
-};
-
-export type GalleryCollection = {
-  id: string;
-  title: string;
-  intro: string;
-  items: GalleryItem[];
+  category: "canh-quan" | "luu-tru" | "trai-nghiem" | "check-in";
 };
 
 export type Review = {
   name: string;
   origin: string;
   quote: string;
+  isFeatured: boolean;
 };
 
-export type ItineraryStop = {
-  name: string;
-  detail: string;
-  x: number;
-  y: number;
-  tone: "olive" | "accent" | "sage";
-};
-
-export type ItineraryDay = {
-  title: string;
-  summary: string;
-  spots: string[];
-};
-
-const triTonImages = {
-  heroMain: "/images/views/view.jpg",
-  heroView: "/images/views/view1.jpg",
-  heroContact: "/images/views/view2.jpg",
-  sceneLake: "/images/views/view.jpg",
-  sceneRoad: "/images/views/view1.jpg",
-  sceneSunset: "/images/views/view2.jpg",
-  stayBungalowMain: "/images/tri-ton/stay-bungalow-main.jpg",
-  stayBungalowDetail: "/images/tri-ton/stay-bungalow-detail.jpg",
-  stayFamilyMain: "/images/tri-ton/stay-family-main.jpg",
-  stayFamilyDetail: "/images/tri-ton/stay-family-detail.jpg",
-  stayCabinMain: "/images/tri-ton/stay-cabin-main.jpg",
-  stayCabinDetail: "/images/tri-ton/stay-cabin-detail.jpg",
-  serviceShuttle: "/images/views/view1.jpg",
-  serviceLake: "/images/views/view.jpg",
-  serviceFood: "/images/views/caphe.jpg",
-  serviceCamp: "/images/views/soda.jpg",
-  serviceTour: "/images/views/view2.jpg",
-  detailRest: "/images/views/caphe.jpg",
-  detailOutdoor: "/images/views/soda.jpg",
-  detailSignage: "/images/views/view1.jpg"
+const imagePaths = {
+  hero: "/images/views/view.jpg",
+  viewLake: "/images/views/view.jpg",
+  viewRoad: "/images/views/view1.jpg",
+  viewSunset: "/images/views/view2.jpg",
+  bungalow: [
+    "/images/tri-ton/stay-bungalow-main.jpg",
+    "/images/tri-ton/stay-bungalow-detail.jpg"
+  ],
+  family: [
+    "/images/tri-ton/stay-family-main.jpg",
+    "/images/tri-ton/stay-family-detail.jpg"
+  ],
+  cabin: [
+    "/images/tri-ton/stay-cabin-main.jpg",
+    "/images/tri-ton/stay-cabin-detail.jpg"
+  ],
+  shuttle: "/images/views/view1.jpg",
+  sup: "/images/views/view.jpg",
+  food: "/images/views/caphe.jpg",
+  camp: "/images/views/soda.jpg",
+  tour: "/images/views/view2.jpg",
+  rest: "/images/views/caphe.jpg",
+  outdoor: "/images/views/soda.jpg",
+  signage: "/images/views/view1.jpg"
 } as const;
 
 export const navigation: NavItem[] = [
@@ -105,24 +86,7 @@ export const siteMeta = {
   description:
     "Landing page dịch vụ Windy Hill tại Tri Tôn, An Giang: cảnh đẹp, dịch vụ trải nghiệm và CTA liên hệ nhanh qua Zalo.",
   location: "Tri Tôn, An Giang",
-  heroImage: triTonImages.heroMain,
-  heroStack: [
-    {
-      title: "Cảnh quan mở trang",
-      text: "Khách vừa vào là thấy hồ, núi, nắng chiều và không khí của vùng Bảy Núi.",
-      image: triTonImages.heroView
-    },
-    {
-      title: "Liên hệ chốt nhanh",
-      text: "Zalo nổi, hotline rõ và form nhẹ để khách hỏi tour, vé tham quan hoặc dịch vụ ngay.",
-      image: triTonImages.heroContact
-    }
-  ],
-  homeStats: [
-    { value: "01", label: "landing page rõ ràng" },
-    { value: "Windy Hill", label: "thương hiệu tại An Giang" },
-    { value: "Dịch vụ", label: "chốt nhanh qua chat" }
-  ],
+  heroImage: imagePaths.hero,
   contact: {
     phoneDisplay: "090 123 4567",
     phoneHref: "tel:+84901234567",
@@ -133,84 +97,22 @@ export const siteMeta = {
   }
 } as const;
 
-export const itineraryBoard: {
-  label: string;
+export type HeroSlide = {
+  image: string;
   title: string;
-  intro: string;
-  mapTitle: string;
-  mapIntro: string;
-  mapStops: ItineraryStop[];
-  days: ItineraryDay[];
-  highlights: string[];
-  tips: string[];
-} = {
-  label: "Lịch trình gợi ý",
-  title: "Khám phá Tri Tôn theo nhịp riêng – hồ, đồi, suối và hàng thốt nốt xanh ngút",
-  intro:
-    "Chỉ cần 2 ngày 1 đêm, bạn có thể ghé đủ các điểm đặc trưng nhất của vùng Bảy Núi: mặt hồ sáng sớm, chùa trên đồi cao, cánh đồng thốt nốt và suối mát cuối hành trình.",
-  mapTitle: "Hành trình 2 ngày ở Tri Tôn",
-  mapIntro: "Bản đồ gợi ý để khách hình dung nhanh nhịp tham quan hồ, chùa, suối và hàng thốt nốt.",
-  mapStops: [
-    {
-      name: "Hồ Soài So",
-      detail: "Mở ngày bằng mặt hồ rộng, dễ chụp ảnh sáng sớm.",
-      x: 18,
-      y: 32,
-      tone: "olive"
-    },
-    {
-      name: "Chùa Tà Pạ",
-      detail: "Điểm nhìn cao, hợp ghé sau khi rời khu hồ.",
-      x: 38,
-      y: 20,
-      tone: "accent"
-    },
-    {
-      name: "Cánh đồng thốt nốt",
-      detail: "Khung cảnh rất Tri Tôn, hợp buổi chiều và sunset.",
-      x: 62,
-      y: 44,
-      tone: "sage"
-    },
-    {
-      name: "Suối Tà Lọt",
-      detail: "Không gian xanh, hợp cho ngày 2 nhẹ và mát hơn.",
-      x: 52,
-      y: 68,
-      tone: "olive"
-    },
-    {
-      name: "Hồ Ô Tà Sóc",
-      detail: "Kết lại hành trình bằng cảnh nước và đồi thoáng.",
-      x: 82,
-      y: 58,
-      tone: "accent"
-    }
-  ],
-  days: [
-    {
-      title: "Ngày 1: hồ, đồi và góc nhìn cao",
-      summary: "Ưu tiên cảnh đẹp dễ wow khách ngay từ đầu và giữ nhịp ảnh thật sáng, thật thoáng.",
-      spots: ["Hồ Soài So", "Chùa Tà Pạ", "Check-in đồi cao", "Ăn trưa món địa phương"]
-    },
-    {
-      title: "Ngày 2: thiên nhiên và chất địa phương",
-      summary: "Đi chậm hơn, nhiều cây xanh hơn và chốt cảm giác Bảy Núi rõ hơn trước khi về.",
-      spots: ["Suối Tà Lọt", "Cánh đồng thốt nốt", "Hồ Ô Tà Sóc", "Mua đặc sản địa phương"]
-    }
-  ],
-  highlights: [
-    "Ảnh hồ và núi mở đầu",
-    "Một điểm cao để lấy toàn cảnh",
-    "Một nhịp thiên nhiên mát hơn cho ngày 2",
-    "Một điểm ăn uống đậm chất địa phương"
-  ],
-  tips: [
-    "Đi chiều muộn để ảnh đẹp hơn và không quá gắt nắng.",
-    "Trang phục sáng màu sẽ hợp cảnh hồ, đồng và đá núi.",
-    "Nên để số điện thoại và Zalo nổi ngay cạnh block này để khách hỏi lịch liền."
-  ]
 };
+
+export const hero = {
+  title: "Windy Hill HomeStay",
+  subtitle: "Trải nghiệm Tri Tôn",
+  slides: [
+    { image: imagePaths.hero, title: "Mặt hồ buổi sáng" },
+    { image: imagePaths.viewLake, title: "Cảnh đẹp Bảy Núi" },
+    { image: imagePaths.viewSunset, title: "Hoàng hôn trên đồi" },
+    { image: imagePaths.viewRoad, title: "Đường dạo nội khu" },
+    { image: imagePaths.bungalow[0], title: "Bungalow ven hồ" }
+  ] as HeroSlide[]
+} as const;
 
 export const rooms: Room[] = [
   {
@@ -232,10 +134,10 @@ export const rooms: Room[] = [
       "Nước suối & khăn sẵn",
       "Xe điện đón nội khu"
     ],
-    images: [
-      triTonImages.stayBungalowMain,
-      triTonImages.stayBungalowDetail,
-      triTonImages.sceneSunset
+    media: [
+      { type: "image", src: imagePaths.bungalow[0], title: "Bungalow view hồ" },
+      { type: "image", src: imagePaths.bungalow[1] },
+      { type: "image", src: imagePaths.viewSunset, title: "Hoàng hôn trên hồ" }
     ]
   },
   {
@@ -257,10 +159,10 @@ export const rooms: Room[] = [
       "Bàn ăn nhỏ",
       "Bãi đỗ xe gần phòng"
     ],
-    images: [
-      triTonImages.stayFamilyMain,
-      triTonImages.stayFamilyDetail,
-      triTonImages.detailOutdoor
+    media: [
+      { type: "image", src: imagePaths.family[0], title: "Nhà sàn gia đình" },
+      { type: "image", src: imagePaths.family[1] },
+      { type: "image", src: imagePaths.outdoor }
     ]
   },
   {
@@ -282,10 +184,10 @@ export const rooms: Room[] = [
       "Điểm đón xe điện gần cabin",
       "Combo ăn sáng nội khu"
     ],
-    images: [
-      triTonImages.stayCabinMain,
-      triTonImages.stayCabinDetail,
-      triTonImages.sceneRoad
+    media: [
+      { type: "image", src: imagePaths.cabin[0], title: "Cabin view đồi" },
+      { type: "image", src: imagePaths.cabin[1], title: "Ban công ngắm cảnh" },
+      { type: "image", src: imagePaths.viewRoad }
     ]
   }
 ];
@@ -297,7 +199,7 @@ export const services: Service[] = [
     description:
       "Phù hợp cho gia đình có trẻ nhỏ hoặc khách đi đông, muốn tham quan trọn khu du lịch mà không phải đi bộ quá nhiều trong nắng.",
     timing: "08:00 - 18:00",
-    image: triTonImages.serviceShuttle
+    image: imagePaths.shuttle
   },
   {
     name: "Chèo sup & đạp vịt",
@@ -305,7 +207,7 @@ export const services: Service[] = [
     description:
       "Đây là dịch vụ lên hình tốt, dễ bán và tạo cảm giác khu du lịch có trải nghiệm thật chứ không chỉ có cảnh để ngắm.",
     timing: "07:00 - 17:30",
-    image: triTonImages.serviceLake
+    image: imagePaths.sup
   },
   {
     name: "Ẩm thực Bảy Núi",
@@ -313,7 +215,7 @@ export const services: Service[] = [
     description:
       "Nội dung dịch vụ nên nhấn vào sự đặc trưng vùng Tri Tôn: món địa phương dễ nhớ, trình bày sạch và có không gian ngồi thoáng cho nhóm khách lớn.",
     timing: "10:00 - 21:00",
-    image: triTonImages.serviceFood
+    image: imagePaths.food
   },
   {
     name: "Cắm trại & lửa tối",
@@ -321,7 +223,7 @@ export const services: Service[] = [
     description:
       "Hoạt động này giúp khu du lịch có thêm lý do để khách ở lại lâu hơn, nhất là các nhóm muốn kết hợp vui chơi ban ngày và sinh hoạt tối.",
     timing: "17:00 - 22:00",
-    image: triTonImages.serviceCamp
+    image: imagePaths.camp
   },
   {
     name: "Tour check-in Tri Tôn",
@@ -329,98 +231,82 @@ export const services: Service[] = [
     description:
       "Phù hợp cho khách đi theo cặp hoặc nhóm nhỏ, muốn được chỉ sẵn các điểm chụp đẹp để không mất thời gian tự tìm góc.",
     timing: "Đặt trước 1 ngày",
-    image: triTonImages.serviceTour
+    image: imagePaths.tour
   }
 ];
 
-export const galleryCollections: GalleryCollection[] = [
+export const gallery: GalleryItem[] = [
   {
-    id: "canh-quan",
-    title: "Cảnh quan Tri Tôn",
-    intro: "Không gian thiên nhiên rộng mở với hồ nước xanh, đồi núi trập trùng và những buổi hoàng hôn tuyệt đẹp đặc trưng của vùng Bảy Núi An Giang.",
-    items: [
-      {
-        title: "Mặt hồ buổi sáng",
-        caption: "Mặt hồ phẳng lặng, trong xanh – địa điểm lý tưởng để thư giãn và chụp ảnh buổi sáng.",
-        image: triTonImages.sceneLake
-      },
-      {
-        title: "Đường dạo nội khu",
-        caption: "Lối đi nội khu thoáng rộng, xanh mát quanh năm, thuận tiện cho xe điện và đi bộ tham quan.",
-        image: triTonImages.sceneRoad
-      },
-      {
-        title: "Hoàng hôn trên đồi",
-        caption: "Hoàng hôn trên đồi Tri Tôn – khoảnh khắc vàng mà du khách không muốn bỏ lỡ.",
-        image: triTonImages.sceneSunset
-      }
-    ]
+    title: "Mặt hồ buổi sáng",
+    caption: "Mặt hồ phẳng lặng, trong xanh – địa điểm lý tưởng để thư giãn và chụp ảnh buổi sáng.",
+    image: imagePaths.viewLake,
+    category: "canh-quan"
   },
   {
-    id: "luu-tru",
-    title: "Khu nghỉ & lưu trú",
-    intro: "Không gian lưu trú sạch sẽ, thoáng mát với view đẹp – được thiết kế để bạn nghỉ ngơi thật sự thoải mái.",
-    items: [
-      {
-        title: "Bungalow view hồ",
-        caption: "Phòng bungalow view hồ thoáng sáng, thiết kế mộc mạc hài hòa với cảnh quan thiên nhiên.",
-        image: triTonImages.stayBungalowMain
-      },
-      {
-        title: "Nhà sàn gia đình",
-        caption: "Nhà sàn rộng rãi với sân chung, phù hợp cho gia đình và nhóm bạn.",
-        image: triTonImages.stayFamilyMain
-      },
-      {
-        title: "Ban công ngắm cảnh",
-        caption: "Ban công cabin nhìn toàn cảnh đồi núi – nơi lý tưởng để đón bình minh và hoàng hôn.",
-        image: triTonImages.stayCabinDetail
-      }
-    ]
+    title: "Đường dạo nội khu",
+    caption: "Lối đi nội khu thoáng rộng, xanh mát quanh năm, thuận tiện cho xe điện và đi bộ tham quan.",
+    image: imagePaths.viewRoad,
+    category: "canh-quan"
   },
   {
-    id: "trai-nghiem",
-    title: "Trải nghiệm & dịch vụ",
-    intro: "Xe điện tham quan, chèo SUP, ẩm thực địa phương, cắm trại và tour check-in – mỗi trải nghiệm đều có điểm nhấn riêng biệt.",
-    items: [
-      {
-        title: "Khu hoạt động ngoài trời",
-        caption: "Khu hoạt động ngoài trời rộng rãi, lý tưởng cho cắm trại và sinh hoạt nhóm ban đêm.",
-        image: triTonImages.serviceCamp
-      },
-      {
-        title: "Trải nghiệm trên hồ",
-        caption: "Chèo SUP và đạp vịt trên mặt hồ – trải nghiệm nhẹ nhàng, thú vị và lên hình đẹp.",
-        image: triTonImages.serviceLake
-      },
-      {
-        title: "Khu ẩm thực địa phương",
-        caption: "Ẩm thực Bảy Núi đậm đà hương vị địa phương – đặc sản khó tìm ở nơi khác.",
-        image: triTonImages.serviceFood
-      }
-    ]
+    title: "Hoàng hôn trên đồi",
+    caption: "Hoàng hôn trên đồi Tri Tôn – khoảnh khắc vàng mà du khách không muốn bỏ lỡ.",
+    image: imagePaths.viewSunset,
+    category: "canh-quan"
   },
   {
-    id: "check-in",
-    title: "Góc check-in & chi tiết",
-    intro: "Từng góc nhỏ trong khu được chăm chút tỉ mỉ – những chi tiết tạo nên trải nghiệm đáng nhớ.",
-    items: [
-      {
-        title: "Góc nghỉ chân",
-        caption: "Góc nghỉ chân xanh mát, thiết kế hài hòa với khung cảnh thiên nhiên xung quanh.",
-        image: triTonImages.detailRest
-      },
-      {
-        title: "Khu bàn ghế ngoài trời",
-        caption: "Không gian ngoài trời thoáng đãng với bàn ghế gỗ mộc – nơi lý tưởng để thư giãn buổi chiều.",
-        image: triTonImages.detailOutdoor
-      },
-      {
-        title: "Chi tiết nhận diện",
-        caption: "Biển hiệu và lối đi được thiết kế chỉn chu, tạo ấn tượng ngay từ lần đầu đặt chân vào khu.",
-        image: triTonImages.detailSignage
-      }
-    ]
+    title: "Bungalow view hồ",
+    caption: "Phòng bungalow view hồ thoáng sáng, thiết kế mộc mạc hài hòa với cảnh quan thiên nhiên.",
+    image: imagePaths.bungalow[0],
+    category: "luu-tru"
+  },
+  {
+    title: "Nhà sàn gia đình",
+    caption: "Nhà sàn rộng rãi với sân chung, phù hợp cho gia đình và nhóm bạn.",
+    image: imagePaths.family[0],
+    category: "luu-tru"
+  },
+  {
+    title: "Ban công ngắm cảnh",
+    caption: "Ban công cabin nhìn toàn cảnh đồi núi – nơi lý tưởng để đón bình minh và hoàng hôn.",
+    image: imagePaths.cabin[1],
+    category: "luu-tru"
+  },
+  {
+    title: "Khu hoạt động ngoài trời",
+    caption: "Khu hoạt động ngoài trời rộng rãi, lý tưởng cho cắm trại và sinh hoạt nhóm ban đêm.",
+    image: imagePaths.camp,
+    category: "trai-nghiem"
+  },
+  {
+    title: "Trải nghiệm trên hồ",
+    caption: "Chèo SUP và đạp vịt trên mặt hồ – trải nghiệm nhẹ nhàng, thú vị và lên hình đẹp.",
+    image: imagePaths.sup,
+    category: "trai-nghiem"
+  },
+  {
+    title: "Khu ẩm thực địa phương",
+    caption: "Ẩm thực Bảy Núi đậm đà hương vị địa phương – đặc sản khó tìm ở nơi khác.",
+    image: imagePaths.food,
+    category: "trai-nghiem"
+  },
+  {
+    title: "Góc nghỉ chân",
+    caption: "Góc nghỉ chân xanh mát, thiết kế hài hòa với khung cảnh thiên nhiên xung quanh.",
+    image: imagePaths.rest,
+    category: "check-in"
+  },
+  {
+    title: "Khu bàn ghế ngoài trời",
+    caption: "Không gian ngoài trời thoáng đãng với bàn ghế gỗ mộc – nơi lý tưởng để thư giãn buổi chiều.",
+    image: imagePaths.outdoor,
+    category: "check-in"
+  },
+  {
+    title: "Chi tiết nhận diện",
+    caption: "Biển hiệu và lối đi được thiết kế chỉn chu, tạo ấn tượng ngay từ lần đầu đặt chân vào khu.",
+    image: imagePaths.signage,
+    category: "check-in"
   }
 ];
 
@@ -428,18 +314,21 @@ export const reviews: Review[] = [
   {
     name: "Ngọc Diễm",
     origin: "Long Xuyên",
+    isFeatured: true,
     quote:
       "Cảnh quan Tri Tôn đẹp và hoang sơ, không thua gì ảnh trên mạng. Đặc biệt là hoàng hôn trên đồi – mình chụp được rất nhiều ảnh đẹp trong buổi chiều đó."
   },
   {
     name: "Phú & Gia đình",
     origin: "Cần Thơ",
+    isFeatured: false,
     quote:
       "Gia đình mình đi 4 người, 2 ngày 1 đêm. Xe điện nội khu tiện lắm, đồ ăn ngon đúng chất địa phương. Bọn trẻ thích mê sup trên hồ, đòi đi lại lần thứ hai."
   },
   {
     name: "Thảo Vy",
     origin: "TP.HCM",
+    isFeatured: false,
     quote:
       "Lần đầu đến Tri Tôn mà cảm giác như đã quen chỗ rồi. Nhân viên nhiệt tình, cabin view đồi rất đẹp và yên tĩnh – đúng thứ mình cần sau tuần làm việc mệt."
   }
