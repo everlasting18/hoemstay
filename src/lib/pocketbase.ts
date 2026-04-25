@@ -29,16 +29,17 @@ export async function fetchPocketBaseList<T>(
 
   const response = await fetch(url, {
     headers: {
-      Accept: "application/json"
+      Accept: "application/json",
     },
-    cache: "no-store",
-    // Cloudflare Workers: bypass edge cache cho subrequest
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    cf: { cacheTtl: 0, cacheEverything: false }
+    // Bỏ cache: "no-store" — không support trên Cloudflare Workers runtime
+    // cf object: bypass cache trên Workers, Node.js/local dev tự ignore
+    cf: { cacheTtl: 0, cacheEverything: false },
   } as RequestInit);
 
   if (!response.ok) {
-    throw new Error(`PocketBase request failed for ${collection}: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `PocketBase request failed for ${collection}: ${response.status} ${response.statusText}`
+    );
   }
 
   const payload = (await response.json()) as PocketBaseListResponse<T>;
