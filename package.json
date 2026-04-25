@@ -9,6 +9,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "cf:dev": "astro build && wrangler dev",
+    "deploy": "astro build && wrangler deploy",
     "pb:mvp:setup": "node ./scripts/pocketbase/setup-mvp.mjs",
     "pb:check": "node ./scripts/pocketbase/check-content.mjs"
   },
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "wrangler": "^4.85.0"
   }
 }

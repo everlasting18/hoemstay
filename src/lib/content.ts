@@ -86,7 +86,7 @@ const galleryCategories = new Set<GalleryItem["category"]>([
 let loggedFallbackReason = false;
 let loggedValidationWarnings = false;
 
-const shouldRequireCms = () => import.meta.env.PUBLIC_REQUIRE_CMS === "false";
+const shouldRequireCms = () => import.meta.env.PUBLIC_REQUIRE_CMS === "true";
 
 const cloneSiteMeta = (siteMeta: typeof fallbackSiteMeta): SiteMeta => ({
   ...siteMeta,

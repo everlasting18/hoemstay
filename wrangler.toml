@@ -1,4 +1,12 @@
 name = "hoemstay"
-compatibility_date = "2024-09-23"
-compatibility_flags = ["nodejs_compat"]
-assets = { directory = "dist" }
+main = "dist/_worker.js/index.js"
+compatibility_date = "2026-04-25"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "404-page"
+
+[observability]
+enabled = true
