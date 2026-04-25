@@ -82,7 +82,7 @@ const galleryCategories = new Set<GalleryItem["category"]>([
   "check-in"
 ]);
 
-let contentPromise: Promise<SiteContent> | undefined;
+// Không cache ở module level — mỗi request Cloudflare Worker fetch fresh từ PocketBase
 let loggedFallbackReason = false;
 let loggedValidationWarnings = false;
 
@@ -451,11 +451,7 @@ async function loadContent() {
 }
 
 export async function getContent() {
-  if (!contentPromise) {
-    contentPromise = loadContent();
-  }
-
-  return contentPromise;
+  return loadContent();
 }
 
 export async function getRooms() {
