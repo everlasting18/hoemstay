@@ -31,8 +31,11 @@ export async function fetchPocketBaseList<T>(
     headers: {
       Accept: "application/json"
     },
-    cache: "no-store"
-  });
+    cache: "no-store",
+    // Cloudflare Workers: bypass edge cache cho subrequest
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cf: { cacheTtl: 0, cacheEverything: false }
+  } as RequestInit);
 
   if (!response.ok) {
     throw new Error(`PocketBase request failed for ${collection}: ${response.status} ${response.statusText}`);
